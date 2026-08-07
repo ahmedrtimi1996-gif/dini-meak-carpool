@@ -7,6 +7,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { extraAr, extraEn, extraFr } from "./i18n-extra";
+
 
 export type Lang = "fr" | "ar" | "en";
 
@@ -323,7 +325,11 @@ const ar: Dict = {
   "common.language": "اللغة",
 };
 
-const DICTS: Record<Lang, Dict> = { fr, ar, en };
+const DICTS: Record<Lang, Dict> = {
+  fr: { ...fr, ...extraFr },
+  ar: { ...ar, ...extraAr },
+  en: { ...en, ...extraEn },
+};
 
 export const CITIES: Record<Lang, Record<string, string>> = {
   fr: {},
