@@ -4,9 +4,11 @@ import { useState } from "react";
 import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/hooks/useAuth";
 
 export function SiteHeader() {
   const { t } = useI18n();
+  const { user, signOut } = useAuth();
   const [open, setOpen] = useState(false);
 
   const links = [
