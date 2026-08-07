@@ -7,6 +7,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { extraAr, extraEn, extraFr } from "./i18n-extra";
+
 
 export type Lang = "fr" | "ar" | "en";
 
