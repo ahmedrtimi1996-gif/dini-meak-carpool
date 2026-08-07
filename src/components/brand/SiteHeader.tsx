@@ -35,6 +35,22 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
+          {user ? (
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              className="hidden rounded-full border border-border px-4 py-2.5 text-sm font-semibold transition-colors hover:border-primary/40 hover:text-primary sm:inline-flex"
+            >
+              {t("nav.logout")}
+            </button>
+          ) : (
+            <Link
+              to="/auth"
+              className="hidden rounded-full border border-border px-4 py-2.5 text-sm font-semibold transition-colors hover:border-primary/40 hover:text-primary sm:inline-flex"
+            >
+              {t("nav.login")}
+            </Link>
+          )}
           <Link
             to="/publish"
             className="hidden items-center gap-1.5 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground shadow-glow transition-transform hover:-translate-y-0.5 sm:inline-flex"
