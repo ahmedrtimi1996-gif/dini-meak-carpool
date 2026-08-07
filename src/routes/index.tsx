@@ -112,7 +112,7 @@ function Home() {
         </section>
 
         {/* Search bar overlapping hero */}
-        <section className="mx-auto -mt-20 w-full max-w-5xl px-4 sm:px-6 lg:px-8">
+        <section className="relative z-10 mx-auto -mt-20 w-full max-w-5xl px-4 sm:px-6 lg:px-8">
           <SearchBar />
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
