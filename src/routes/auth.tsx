@@ -54,11 +54,11 @@ function AuthPage() {
         });
         if (err) throw err;
         if (!data.session) setNotice(t("auth.checkEmail"));
-        else navigate({ to: "/dashboard" });
+        else navigate({ to: "/" });
       } else {
         const { error: err } = await supabase.auth.signInWithPassword({ email, password });
         if (err) throw err;
-        navigate({ to: "/dashboard" });
+        navigate({ to: "/" });
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : t("common.error"));
@@ -77,7 +77,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/dashboard" });
+    navigate({ to: "/" });
   }
 
   async function reset() {
@@ -86,7 +86,7 @@ function AuthPage() {
       return;
     }
     const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: window.location.origin,
     });
     if (err) setError(err.message);
     else setNotice(t("auth.resetSent"));
