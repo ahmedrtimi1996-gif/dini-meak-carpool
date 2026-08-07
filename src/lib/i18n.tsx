@@ -323,7 +323,11 @@ const ar: Dict = {
   "common.language": "اللغة",
 };
 
-const DICTS: Record<Lang, Dict> = { fr, ar, en };
+const DICTS: Record<Lang, Dict> = {
+  fr: { ...fr, ...extraFr },
+  ar: { ...ar, ...extraAr },
+  en: { ...en, ...extraEn },
+};
 
 export const CITIES: Record<Lang, Record<string, string>> = {
   fr: {},
