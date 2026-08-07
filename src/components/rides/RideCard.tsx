@@ -26,9 +26,9 @@ export function RideCard({ ride }: { ride: Ride }) {
               {ride.duration}
             </p>
             <div className="flex items-baseline gap-2">
-              <span className="text-sm font-bold tabular-nums text-muted-foreground">·</span>
               <h3 className="truncate text-base font-bold">{city(ride.to)}</h3>
             </div>
+
           </div>
         </div>
 
