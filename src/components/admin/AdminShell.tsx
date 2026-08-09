@@ -50,7 +50,7 @@ export function AdminShell({
           className="border-b border-border bg-card lg:min-h-screen lg:w-64 lg:shrink-0 lg:border-b-0 lg:border-e"
         >
           <div className="flex items-center gap-2 px-5 py-5">
-            <Logo className="h-8 w-auto" />
+            <Logo compact />
             <span className="rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-primary">
               Admin
             </span>
