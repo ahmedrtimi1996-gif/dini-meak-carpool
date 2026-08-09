@@ -194,7 +194,7 @@ export async function setAccountStatus(
   }
   if (status === "deleted") patch['deleted_at'] = new Date().toISOString();
 
-  const { error } = await supabase.from("profiles").update(patch).eq("id", userId);
+  const { error } = await supabase.from("profiles").update(patch as never).eq("id", userId);
   if (error) throw error;
   await logAudit("account_status_change", "profiles", userId, { status, ...opts });
 }
@@ -204,7 +204,7 @@ export async function setVerification(
   field: "identity_verified" | "license_verified" | "phone_verified" | "email_verified",
   value: boolean,
 ) {
-  const { error } = await supabase.from("profiles").update({ [field]: value }).eq("id", userId);
+  const { error } = await supabase.from("profiles").update({ [field]: value } as never).eq("id", userId);
   if (error) throw error;
   await logAudit("verification_change", "profiles", userId, { field, value });
 }
