@@ -232,7 +232,7 @@ export function normalize(value: string) {
 
 export function filterRides(
   rides: Ride[],
-  q: { from?: string; to?: string; date?: string; seats?: number },
+  q: { from?: string | undefined; to?: string | undefined; date?: string | undefined; seats?: number | undefined },
 ) {
   return rides.filter((r) => {
     if (q.from && !normalize(r.from).includes(normalize(q.from))) return false;
