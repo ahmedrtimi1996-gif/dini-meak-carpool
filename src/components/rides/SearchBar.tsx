@@ -5,7 +5,12 @@ import { useI18n } from "@/lib/i18n";
 import { MOROCCAN_CITIES } from "@/lib/rides";
 
 type Props = {
-  initial?: { from?: string; to?: string; date?: string; seats?: number };
+  initial?: {
+    from?: string | undefined;
+    to?: string | undefined;
+    date?: string | undefined;
+    seats?: number | undefined;
+  };
   variant?: "hero" | "inline";
 };
 
