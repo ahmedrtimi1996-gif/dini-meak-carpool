@@ -30,10 +30,10 @@ export const Route = createFileRoute("/")({
         content:
           "DiniM3ak relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route.",
       },
-      { property: "og:title", content: "DiniM3ak — Le covoiturage intelligent au Maroc" },
+      { property: "og:title", content: "DiniM3ak — Covoiturage au Maroc, voyagez ensemble" },
       {
         property: "og:description",
-        content: "Voyagez ensemble, économisez davantage. Trajets vérifiés partout au Maroc.",
+        content: "DiniM3ak relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },

@@ -80,17 +80,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "DiniM3ak — Covoiturage au Maroc" },
+      { title: "DiniM3ak — Covoiturage au Maroc, voyagez ensemble" },
       {
         name: "description",
         content:
-          "DiniM3ak : le covoiturage intelligent au Maroc. Voyagez ensemble, économisez davantage.",
+          "DiniM3ak relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route.",
       },
       { name: "author", content: "DiniM3ak" },
       { property: "og:site_name", content: "DiniM3ak" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0F766E" },
+      { property: "og:title", content: "DiniM3ak — Covoiturage au Maroc, voyagez ensemble" },
+      { name: "twitter:title", content: "DiniM3ak — Covoiturage au Maroc, voyagez ensemble" },
+      { property: "og:description", content: "DiniM3ak relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route." },
+      { name: "twitter:description", content: "DiniM3ak relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c8ae34d28a5209573418ee535c52ea75/id-preview-df7c6e28--a7e7ac89-cdfc-4c9c-86cf-0bb9dd04d883.lovable.app-1786234005010.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c8ae34d28a5209573418ee535c52ea75/id-preview-df7c6e28--a7e7ac89-cdfc-4c9c-86cf-0bb9dd04d883.lovable.app-1786234005010.png" },
     ],
     links: [
       {
