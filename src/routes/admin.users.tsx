@@ -79,7 +79,10 @@ function AdminUsersPage() {
 
   const statusMutation = useMutation({
     mutationFn: (input: { id: string; next: AccountStatus; reason?: string; until?: string | null }) =>
-      setAccountStatus(input.id, input.next, { reason: input.reason, until: input.until ?? null }),
+      setAccountStatus(input.id, input.next, {
+        ...(input.reason ? { reason: input.reason } : {}),
+        until: input.until ?? null,
+      }),
     onSuccess: (_d, input) => {
       toast.success(`Compte mis à jour : ${STATUS_LABEL[input.next]}`);
       setModeration(null);
