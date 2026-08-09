@@ -157,8 +157,8 @@ function AdminTripsPage() {
                   <TableCell className="text-xs">
                     {t.depart_date} · {t.depart_time?.slice(0, 5)}
                   </TableCell>
-                  <TableCell className="text-xs">
-                    {[t.driver?.first_name, t.driver?.last_name].filter(Boolean).join(" ") || "—"}
+                  <TableCell className="font-mono text-[10px] text-muted-foreground">
+                    {t.driver_id.slice(0, 8)}
                   </TableCell>
                   <TableCell className="text-end font-bold">
                     {t.price} {t.currency}
