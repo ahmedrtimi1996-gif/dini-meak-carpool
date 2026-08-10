@@ -2,10 +2,7 @@ import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import {
   BadgeAlert,
   Car,
-  CreditCard,
   LayoutDashboard,
-  LifeBuoy,
-  ScrollText,
   ShieldAlert,
   Users,
 } from "lucide-react";
