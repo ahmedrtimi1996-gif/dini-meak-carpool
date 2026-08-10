@@ -165,9 +165,10 @@ export async function uploadDocument(opts: {
 
   const { error: upErr } = await supabase.storage.from(DOC_BUCKET).upload(path, opts.file, {
     upsert: false,
-    contentType: opts.file.type || undefined,
+    ...(opts.file.type ? { contentType: opts.file.type } : {}),
   });
   if (upErr) throw upErr;
+
 
   const { data, error } = await supabase
     .from("driver_documents")
