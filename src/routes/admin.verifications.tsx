@@ -50,10 +50,10 @@ function AdminVerifications() {
   const review = useMutation({
     mutationFn: (args: { id: string; approve: boolean; note?: string }) =>
       reviewDocument({
-        documentId: args.id,
+        id: args.id,
         reviewerId: user!.id,
         status: args.approve ? "approved" : "rejected",
-        ...(args.note ? { note: args.note } : {}),
+        ...(args.note ? { reason: args.note } : {}),
       }),
     onSuccess: async () => {
       setError(null);
@@ -61,6 +61,9 @@ function AdminVerifications() {
     },
     onError: (e: Error) => setError(e.message),
   });
+
+  const rows = docs.data?.docs ?? [];
+  const owners = docs.data?.owners ?? new Map();
 
   async function open(path: string) {
     try {
@@ -101,19 +104,20 @@ function AdminVerifications() {
         <div className="mt-8 flex justify-center" role="status" aria-live="polite">
           <Loader2 className="h-5 w-5 animate-spin text-primary" aria-hidden="true" />
         </div>
-      ) : (docs.data ?? []).length === 0 ? (
+      ) : rows.length === 0 ? (
         <p className="mt-8 rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
           Aucun document dans cette file.
         </p>
       ) : (
         <ul className="mt-6 space-y-3">
-          {(docs.data ?? []).map((d) => (
+          {rows.map((d) => (
             <li key={d.id} className="surface-panel rounded-2xl p-5">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <p className="text-sm font-extrabold">{DOC_LABELS[d.doc_type]}</p>
                   <p className="mt-1 text-xs font-semibold text-muted-foreground">
-                    {d.owner?.first_name ?? "Membre"} {d.owner?.last_name ?? ""} ·{" "}
+                    {owners.get(d.user_id)?.first_name ?? "Membre"}{" "}
+                    {owners.get(d.user_id)?.last_name ?? ""} ·{" "}
                     {new Date(d.created_at).toLocaleString("fr-MA")}
                     {d.expires_on ? ` · expire le ${d.expires_on}` : ""}
                   </p>
