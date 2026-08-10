@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as PublishRouteImport } from './routes/publish'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminTripsRouteImport } from './routes/admin.trips'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
@@ -49,6 +50,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerificationRoute = VerificationRouteImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/how-it-works': typeof HowItWorksRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
+  '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin/': typeof AdminIndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/how-it-works': typeof HowItWorksRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
+  '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin': typeof AdminIndexRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/how-it-works': typeof HowItWorksRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
+  '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin/': typeof AdminIndexRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/publish'
     | '/search'
+    | '/verification'
     | '/admin/trips'
     | '/admin/users'
     | '/admin/'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/publish'
     | '/search'
+    | '/verification'
     | '/admin/trips'
     | '/admin/users'
     | '/admin'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/publish'
     | '/search'
+    | '/verification'
     | '/admin/trips'
     | '/admin/users'
     | '/admin/'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   HowItWorksRoute: typeof HowItWorksRoute
   PublishRoute: typeof PublishRoute
   SearchRoute: typeof SearchRoute
+  VerificationRoute: typeof VerificationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -184,6 +197,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verification': {
+      id: '/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -231,17 +251,8 @@ const rootRouteChildren: RootRouteChildren = {
   HowItWorksRoute: HowItWorksRoute,
   PublishRoute: PublishRoute,
   SearchRoute: SearchRoute,
+  VerificationRoute: VerificationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
