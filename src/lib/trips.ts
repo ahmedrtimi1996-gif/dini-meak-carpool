@@ -194,3 +194,94 @@ export async function myTrips(userId: string): Promise<TripWithDriver[]> {
 }
 
 export { TRIP_SELECT };
+
+/** ---------- Trip creation (real DB insert) ---------- */
+
+export type NewTripInput = {
+  from_city: string;
+  to_city: string;
+  depart_date: string;
+  depart_time: string;
+  arrive_time?: string | null;
+  seats_total: number;
+  price: number;
+  vehicle_id?: string | null;
+  stops?: string[];
+  meeting_point?: string | null;
+  arrival_point?: string | null;
+  distance_km?: number | null;
+  duration_minutes?: number | null;
+  luggage?: string;
+  smoking_allowed?: boolean;
+  pets_allowed?: boolean;
+  women_only?: boolean;
+  instant_booking?: boolean;
+  description?: string | null;
+  status?: "published" | "paused";
+};
+
+/**
+ * Inserts the trip owned by the authenticated user. `driver_id` is taken from the
+ * live session — never from the form — and RLS re-checks it server-side.
+ */
+export async function createTrip(input: NewTripInput): Promise<TripRow> {
+  const { data: auth, error: authError } = await supabase.auth.getUser();
+  if (authError || !auth.user) throw new Error("Vous devez être connecté pour publier un trajet.");
+  const driverId = auth.user.id;
+
+  const payload = {
+    driver_id: driverId,
+    vehicle_id: input.vehicle_id || null,
+    from_city: input.from_city.trim(),
+    to_city: input.to_city.trim(),
+    stops: input.stops ?? [],
+    meeting_point: input.meeting_point?.trim() || null,
+    arrival_point: input.arrival_point?.trim() || null,
+    depart_date: input.depart_date,
+    depart_time: input.depart_time.length === 5 ? `${input.depart_time}:00` : input.depart_time,
+    arrive_time: input.arrive_time
+      ? input.arrive_time.length === 5
+        ? `${input.arrive_time}:00`
+        : input.arrive_time
+      : null,
+    duration_minutes: input.duration_minutes ?? null,
+    distance_km: input.distance_km ?? null,
+    seats_total: input.seats_total,
+    seats_available: input.seats_total,
+    price: input.price,
+    currency: "MAD",
+    luggage: input.luggage ?? "medium",
+    smoking_allowed: input.smoking_allowed ?? false,
+    pets_allowed: input.pets_allowed ?? false,
+    women_only: input.women_only ?? false,
+    instant_booking: input.instant_booking ?? false,
+    description: input.description?.trim() || null,
+    status: input.status ?? "published",
+  };
+
+  const { data, error } = await supabase.from("trips").insert(payload).select("*").single();
+  if (error) throw error;
+  if (!data) throw new Error("La publication a échoué : aucun trajet retourné par la base.");
+  return data as TripRow;
+}
+
+export async function updateTripStatus(id: string, status: "published" | "paused" | "cancelled" | "completed") {
+  const { error } = await supabase.from("trips").update({ status }).eq("id", id);
+  if (error) throw error;
+}
+
+export async function tripBookingCounts(tripIds: string[]) {
+  if (tripIds.length === 0) return new Map<string, number>();
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("trip_id, status")
+    .in("trip_id", tripIds);
+  if (error) throw error;
+  const map = new Map<string, number>();
+  for (const row of data ?? []) {
+    if (row.status === "accepted" || row.status === "completed" || row.status === "pending") {
+      map.set(row.trip_id, (map.get(row.trip_id) ?? 0) + 1);
+    }
+  }
+  return map;
+}

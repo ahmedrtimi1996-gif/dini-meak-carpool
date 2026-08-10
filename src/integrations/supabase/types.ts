@@ -245,12 +245,14 @@ export type Database = {
           created_at: string
           doc_type: string
           expires_on: string | null
+          expiry_notified_at: string | null
           file_url: string
           id: string
           review_note: string | null
           reviewed_at: string | null
           reviewed_by: string | null
           status: string
+          submitted_at: string
           updated_at: string
           user_id: string
           vehicle_id: string | null
@@ -259,12 +261,14 @@ export type Database = {
           created_at?: string
           doc_type: string
           expires_on?: string | null
+          expiry_notified_at?: string | null
           file_url: string
           id?: string
           review_note?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: string
+          submitted_at?: string
           updated_at?: string
           user_id: string
           vehicle_id?: string | null
@@ -273,12 +277,14 @@ export type Database = {
           created_at?: string
           doc_type?: string
           expires_on?: string | null
+          expiry_notified_at?: string | null
           file_url?: string
           id?: string
           review_note?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: string
+          submitted_at?: string
           updated_at?: string
           user_id?: string
           vehicle_id?: string | null
@@ -522,6 +528,7 @@ export type Database = {
           gender: string | null
           id: string
           identity_verified: boolean
+          insurance_verified: boolean
           is_featured: boolean
           languages: string[]
           last_name: string | null
@@ -535,6 +542,7 @@ export type Database = {
           suspended_until: string | null
           suspension_reason: string | null
           updated_at: string
+          vehicle_verified: boolean
         }
         Insert: {
           account_status?: Database["public"]["Enums"]["account_status"]
@@ -556,6 +564,7 @@ export type Database = {
           gender?: string | null
           id: string
           identity_verified?: boolean
+          insurance_verified?: boolean
           is_featured?: boolean
           languages?: string[]
           last_name?: string | null
@@ -569,6 +578,7 @@ export type Database = {
           suspended_until?: string | null
           suspension_reason?: string | null
           updated_at?: string
+          vehicle_verified?: boolean
         }
         Update: {
           account_status?: Database["public"]["Enums"]["account_status"]
@@ -590,6 +600,7 @@ export type Database = {
           gender?: string | null
           id?: string
           identity_verified?: boolean
+          insurance_verified?: boolean
           is_featured?: boolean
           languages?: string[]
           last_name?: string | null
@@ -603,6 +614,7 @@ export type Database = {
           suspended_until?: string | null
           suspension_reason?: string | null
           updated_at?: string
+          vehicle_verified?: boolean
         }
         Relationships: []
       }
@@ -1187,6 +1199,7 @@ export type Database = {
     }
     Functions: {
       admin_dashboard_stats: { Args: never; Returns: Json }
+      driver_publish_requirements: { Args: { _user_id: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
