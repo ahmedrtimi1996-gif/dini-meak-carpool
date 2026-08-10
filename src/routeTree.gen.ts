@@ -16,6 +16,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as PublishRouteImport } from './routes/publish'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as VehiclesRouteImport } from './routes/vehicles'
 import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminTripsRouteImport } from './routes/admin.trips'
@@ -56,6 +57,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VehiclesRoute = VehiclesRouteImport.update({
+  id: '/vehicles',
+  path: '/vehicles',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VerificationRoute = VerificationRouteImport.update({
   id: '/verification',
   path: '/verification',
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/how-it-works': typeof HowItWorksRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
+  '/vehicles': typeof VehiclesRoute
   '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/how-it-works': typeof HowItWorksRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
+  '/vehicles': typeof VehiclesRoute
   '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/how-it-works': typeof HowItWorksRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
+  '/vehicles': typeof VehiclesRoute
   '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/publish'
     | '/search'
+    | '/vehicles'
     | '/verification'
     | '/admin/trips'
     | '/admin/users'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/publish'
     | '/search'
+    | '/vehicles'
     | '/verification'
     | '/admin/trips'
     | '/admin/users'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/publish'
     | '/search'
+    | '/vehicles'
     | '/verification'
     | '/admin/trips'
     | '/admin/users'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   HowItWorksRoute: typeof HowItWorksRoute
   PublishRoute: typeof PublishRoute
   SearchRoute: typeof SearchRoute
+  VehiclesRoute: typeof VehiclesRoute
   VerificationRoute: typeof VerificationRoute
 }
 
@@ -217,6 +230,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vehicles': {
+      id: '/vehicles'
+      path: '/vehicles'
+      fullPath: '/vehicles'
+      preLoaderRoute: typeof VehiclesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/verification': {
@@ -272,6 +292,7 @@ const rootRouteChildren: RootRouteChildren = {
   HowItWorksRoute: HowItWorksRoute,
   PublishRoute: PublishRoute,
   SearchRoute: SearchRoute,
+  VehiclesRoute: VehiclesRoute,
   VerificationRoute: VerificationRoute,
 }
 export const routeTree = rootRouteImport
