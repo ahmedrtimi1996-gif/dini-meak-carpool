@@ -17,11 +17,9 @@ export const ADMIN_NAV = [
   { to: "/admin", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
   { to: "/admin/users", label: "Utilisateurs", icon: Users, exact: false },
   { to: "/admin/trips", label: "Trajets", icon: Car, exact: false },
-  { to: "/admin/payments", label: "Paiements", icon: CreditCard, exact: false },
-  { to: "/admin/reports", label: "Modération", icon: ShieldAlert, exact: false },
-  { to: "/admin/support", label: "Support", icon: LifeBuoy, exact: false },
-  { to: "/admin/audit", label: "Journal d'audit", icon: ScrollText, exact: false },
+  { to: "/admin/verifications", label: "Vérifications", icon: ShieldAlert, exact: false },
 ] as const;
+
 
 export function AdminShell({
   title,
