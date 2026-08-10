@@ -21,6 +21,7 @@ import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminTripsRouteImport } from './routes/admin.trips'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminVerificationsRouteImport } from './routes/admin.verifications'
 import { Route as ProfileEditRouteImport } from './routes/profile.edit'
 
 const IndexRoute = IndexRouteImport.update({
@@ -83,6 +84,11 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminVerificationsRoute = AdminVerificationsRouteImport.update({
+  id: '/verifications',
+  path: '/verifications',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ProfileEditRoute = ProfileEditRouteImport.update({
   id: '/profile/edit',
   path: '/profile/edit',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/verifications': typeof AdminVerificationsRoute
   '/profile/edit': typeof ProfileEditRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/verifications': typeof AdminVerificationsRoute
   '/profile/edit': typeof ProfileEditRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/verification': typeof VerificationRoute
   '/admin/trips': typeof AdminTripsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/verifications': typeof AdminVerificationsRoute
   '/profile/edit': typeof ProfileEditRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/verification'
     | '/admin/trips'
     | '/admin/users'
+    | '/admin/verifications'
     | '/profile/edit'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -162,6 +172,7 @@ export interface FileRouteTypes {
     | '/verification'
     | '/admin/trips'
     | '/admin/users'
+    | '/admin/verifications'
     | '/profile/edit'
     | '/admin'
   id:
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/verification'
     | '/admin/trips'
     | '/admin/users'
+    | '/admin/verifications'
     | '/profile/edit'
     | '/admin/'
   fileRoutesById: FileRoutesById
@@ -280,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/verifications': {
+      id: '/admin/verifications'
+      path: '/verifications'
+      fullPath: '/admin/verifications'
+      preLoaderRoute: typeof AdminVerificationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/profile/edit': {
       id: '/profile/edit'
       path: '/profile/edit'
@@ -293,12 +312,14 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminTripsRoute: typeof AdminTripsRoute
   AdminUsersRoute: typeof AdminUsersRoute
+  AdminVerificationsRoute: typeof AdminVerificationsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminTripsRoute: AdminTripsRoute,
   AdminUsersRoute: AdminUsersRoute,
+  AdminVerificationsRoute: AdminVerificationsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
