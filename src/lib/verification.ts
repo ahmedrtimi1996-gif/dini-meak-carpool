@@ -73,6 +73,13 @@ export const DRIVER_REQUIRED_DOCS: DocType[] = [
   "insurance",
 ];
 
+/** Document types that never expire (enforced in the database too). */
+export const NO_EXPIRY_DOCS: DocType[] = ["selfie"];
+
+export function hasExpiry(docType: DocType) {
+  return !NO_EXPIRY_DOCS.includes(docType);
+}
+
 export type PublishRequirements = {
   email_verified: boolean;
   phone_verified: boolean;
@@ -81,6 +88,7 @@ export type PublishRequirements = {
   vehicle_verified: boolean;
   insurance_verified: boolean;
   has_vehicle: boolean;
+  has_verified_vehicle: boolean;
   account_active: boolean;
   expired_documents: string[];
 };
@@ -98,6 +106,36 @@ export async function fetchPublishRequirements(userId: string): Promise<PublishR
   return data as unknown as PublishRequirements;
 }
 
+/** Per-vehicle verification status, straight from the database (never client-set). */
+export type VehicleStatus = "not_submitted" | "pending" | "under_review" | "approved" | "rejected" | "expired";
+
+export async function fetchVehicleStatuses(ownerId: string): Promise<Map<string, VehicleStatus>> {
+  const { data, error } = await supabase.rpc("vehicle_verification_statuses", {
+    _owner_id: ownerId,
+  });
+  if (error) throw error;
+  const obj = (data ?? {}) as Record<string, VehicleStatus>;
+  return new Map(Object.entries(obj));
+}
+
+/** Resend the Supabase Auth confirmation email for an unverified address. */
+export async function resendVerificationEmail(email: string) {
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: { emailRedirectTo: `${window.location.origin}/verification` },
+  });
+  if (error) {
+    const msg = error.message.toLowerCase();
+    if (error.status === 429 || msg.includes("rate limit") || msg.includes("security purposes")) {
+      throw new Error(
+        "Trop de demandes. Patientez une minute avant de redemander un e-mail de vérification.",
+      );
+    }
+    throw new Error(error.message);
+  }
+}
+
 export function requirementList(r: PublishRequirements | null): RequirementItem[] {
   const req = r ?? ({} as Partial<PublishRequirements>);
   const expired = req.expired_documents ?? [];
@@ -111,6 +149,14 @@ export function requirementList(r: PublishRequirements | null): RequirementItem[
       ok: Boolean(req.license_verified),
     },
     { key: "has_vehicle", label: "Véhicule enregistré", ok: Boolean(req.has_vehicle) },
+    {
+      key: "has_verified_vehicle",
+      label: "Véhicule vérifié",
+      ok: Boolean(req.has_verified_vehicle),
+      ...(req.has_verified_vehicle
+        ? {}
+        : { hint: "carte grise du véhicule à valider par l'équipe" }),
+    },
     { key: "vehicle_verified", label: "Carte grise vérifiée", ok: Boolean(req.vehicle_verified) },
     { key: "insurance_verified", label: "Assurance vérifiée", ok: Boolean(req.insurance_verified) },
     { key: "account_active", label: "Compte en règle", ok: Boolean(req.account_active) },
@@ -148,10 +194,18 @@ export function latestByType(docs: DriverDocument[]) {
 
 export function effectiveStatus(doc: DriverDocument | undefined): DocStatus {
   if (!doc) return "not_submitted";
+  // Selfies (and any other no-expiry type) never expire.
+  if (!hasExpiry(doc.doc_type)) return doc.status === "expired" ? "pending" : doc.status;
   if (doc.status === "approved" && doc.expires_on && doc.expires_on < new Date().toISOString().slice(0, 10))
     return "expired";
   return doc.status;
 }
+
+/** Latest vehicle-registration document for a given vehicle. */
+export function vehicleRegistrationDoc(docs: DriverDocument[], vehicleId: string) {
+  return docs.find((d) => d.doc_type === "vehicle_registration" && d.vehicle_id === vehicleId);
+}
+
 
 export async function uploadDocument(opts: {
   userId: string;
@@ -177,7 +231,7 @@ export async function uploadDocument(opts: {
       doc_type: opts.docType,
       file_url: path,
       status: "pending",
-      expires_on: opts.expiresOn || null,
+      expires_on: hasExpiry(opts.docType) ? opts.expiresOn || null : null,
       vehicle_id: opts.vehicleId || null,
     })
     .select("*")

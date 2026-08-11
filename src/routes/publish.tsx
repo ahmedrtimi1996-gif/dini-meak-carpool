@@ -8,7 +8,7 @@ import { RequirementChecklist } from "@/components/profile/RequirementChecklist"
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
 import { MOROCCAN_CITIES } from "@/lib/rides";
-import { canPublish, fetchPublishRequirements } from "@/lib/verification";
+import { canPublish, fetchPublishRequirements, fetchVehicleStatuses } from "@/lib/verification";
 import { myVehicles } from "@/lib/profiles";
 import { commissionFor } from "@/lib/trips";
 import { createTrip } from "@/lib/trips";
@@ -96,6 +96,13 @@ function PublishPage() {
     enabled: Boolean(user?.id),
   });
 
+  const vehicleStatusQuery = useQuery({
+    queryKey: ["vehicle-statuses", user?.id],
+    queryFn: () => fetchVehicleStatuses(user!.id),
+    enabled: Boolean(user?.id),
+  });
+
+
   const publish = useMutation({
     mutationFn: async (d: Draft) =>
       createTrip({
@@ -119,7 +126,13 @@ function PublishPage() {
     onError: (e: Error) => setError(e.message),
   });
 
-  const allowed = canPublish(reqQuery.data ?? null);
+  const vehicles = vehiclesQuery.data ?? [];
+  const vehicleStatuses = vehicleStatusQuery.data ?? new Map<string, string>();
+  const verifiedVehicles = vehicles.filter((v) => vehicleStatuses.get(v.id) === "approved");
+  const hasVerifiedVehicle = verifiedVehicles.length > 0;
+  const selectedVehicleVerified =
+    Boolean(draft.vehicleId) && vehicleStatuses.get(draft.vehicleId) === "approved";
+  const allowed = canPublish(reqQuery.data ?? null) && hasVerifiedVehicle;
   const label = "block text-xs font-bold uppercase tracking-widest text-muted-foreground";
   const input =
     "mt-2 w-full rounded-xl border border-input bg-card px-4 py-3 text-sm font-semibold outline-none transition-colors focus:border-primary";
@@ -142,11 +155,39 @@ function PublishPage() {
         <h1 className="text-3xl font-extrabold">{t("publish.title")}</h1>
         <p className="mt-2 text-muted-foreground">{t("publish.subtitle")}</p>
 
+        {!hasVerifiedVehicle && !vehicleStatusQuery.isLoading ? (
+          <div className="mt-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-6">
+            <p className="text-sm font-extrabold text-amber-900 dark:text-amber-200">
+              La vérification du véhicule est obligatoire avant de publier un trajet.
+            </p>
+            <p className="mt-2 text-sm font-semibold text-amber-900/80 dark:text-amber-200/80">
+              {vehicles.length === 0
+                ? "Aucun véhicule enregistré. Ajoutez un véhicule puis envoyez sa carte grise."
+                : "Aucun de vos véhicules n'est encore vérifié. Envoyez la carte grise du véhicule concerné."}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link
+                to="/vehicles"
+                className="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground"
+              >
+                Ajouter un véhicule
+              </Link>
+              <Link
+                to="/verification"
+                className="rounded-full border border-border px-5 py-2.5 text-sm font-semibold"
+              >
+                Envoyer la carte grise
+              </Link>
+            </div>
+          </div>
+        ) : null}
+
         {!allowed ? (
           <div className="mt-8">
             <RequirementChecklist requirements={reqQuery.data ?? null} />
           </div>
         ) : null}
+
 
         {created ? (
           <div className="mt-8 rounded-2xl border border-primary/30 bg-primary-soft p-6">
@@ -183,6 +224,16 @@ function PublishPage() {
             onSubmit={(e) => {
               e.preventDefault();
               setError(null);
+              if (!hasVerifiedVehicle) {
+                setError("La vérification du véhicule est obligatoire avant de publier un trajet.");
+                return;
+              }
+              if (!selectedVehicleVerified) {
+                setError(
+                  "Ce véhicule n'est pas vérifié. Sélectionnez un véhicule vérifié ou envoyez sa carte grise depuis le centre de vérification.",
+                );
+                return;
+              }
               if (!allowed) {
                 setError("Vérification incomplète : complétez les éléments listés ci-dessus.");
                 return;
@@ -348,17 +399,28 @@ function PublishPage() {
                   </label>
                   <select
                     id="vehicle"
+                    required
                     className={input}
                     value={draft.vehicleId}
                     onChange={(e) => setDraft({ ...draft, vehicleId: e.target.value })}
                   >
-                    <option value="">Sélectionner un véhicule</option>
-                    {(vehiclesQuery.data ?? []).map((v) => (
-                      <option key={v.id} value={v.id}>
-                        {v.brand} {v.model} {v.color ? `· ${v.color}` : ""}
-                      </option>
-                    ))}
+                    <option value="">Sélectionner un véhicule vérifié</option>
+                    {vehicles.map((v) => {
+                      const st = vehicleStatuses.get(v.id) ?? "not_submitted";
+                      return (
+                        <option key={v.id} value={v.id} disabled={st !== "approved"}>
+                          {v.brand} {v.model} {v.color ? `· ${v.color}` : ""} —{" "}
+                          {st === "approved" ? "vérifié" : "non vérifié"}
+                        </option>
+                      );
+                    })}
                   </select>
+                  {draft.vehicleId && !selectedVehicleVerified ? (
+                    <p className="mt-2 text-xs font-bold text-destructive">
+                      Ce véhicule n'est pas vérifié : la publication est bloquée jusqu'à la validation
+                      de sa carte grise.
+                    </p>
+                  ) : null}
                   <Link
                     to="/vehicles"
                     className="mt-2 inline-block text-xs font-bold text-primary underline-offset-4 hover:underline"

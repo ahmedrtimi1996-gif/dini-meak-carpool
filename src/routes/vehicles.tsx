@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -6,6 +6,8 @@ import { SiteHeader } from "@/components/brand/SiteHeader";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { useAuth } from "@/hooks/useAuth";
 import { createVehicle, deleteVehicle, ensureDriverRole, myVehicles } from "@/lib/profiles";
+import { fetchVehicleStatuses, type DocStatus } from "@/lib/verification";
+import { StatusPill } from "@/components/profile/StatusPill";
 
 export const Route = createFileRoute("/vehicles")({
   ssr: false,
@@ -52,6 +54,13 @@ function VehiclesPage() {
     enabled: Boolean(user?.id),
   });
 
+  const statuses = useQuery({
+    queryKey: ["vehicle-statuses", user?.id],
+    queryFn: () => fetchVehicleStatuses(user!.id),
+    enabled: Boolean(user?.id),
+  });
+
+
   const add = useMutation({
     mutationFn: async () => {
       await ensureDriverRole(user!.id);
@@ -97,7 +106,8 @@ function VehiclesPage() {
       <main className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-extrabold">Mes véhicules</h1>
         <p className="mt-2 text-muted-foreground">
-          Un véhicule enregistré est requis pour publier un trajet.
+          Chaque véhicule doit être vérifié (carte grise validée par l'équipe) avant de pouvoir
+          publier un trajet avec ce véhicule.
         </p>
 
         {error ? (
@@ -107,27 +117,53 @@ function VehiclesPage() {
         ) : null}
 
         <ul className="mt-8 space-y-3">
-          {(list.data ?? []).map((v) => (
-            <li key={v.id} className="surface-panel flex items-center justify-between rounded-2xl p-5">
-              <div>
-                <p className="text-sm font-extrabold">
-                  {v.brand} {v.model} {v.year ? `· ${v.year}` : ""}
-                </p>
-                <p className="mt-1 text-xs font-semibold text-muted-foreground">
-                  {v.seats} places {v.color ? `· ${v.color}` : ""}{" "}
-                  {v.insurance_valid_until ? `· assurance jusqu'au ${v.insurance_valid_until}` : ""}
-                </p>
-              </div>
-              <button
-                type="button"
-                aria-label={`Supprimer ${v.brand} ${v.model}`}
-                onClick={() => remove.mutate(v.id)}
-                className="rounded-full border border-border p-2 text-destructive hover:border-destructive/50"
-              >
-                <Trash2 className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </li>
-          ))}
+          {(list.data ?? []).map((v) => {
+            const status = (statuses.data?.get(v.id) ?? "not_submitted") as DocStatus;
+            return (
+              <li key={v.id} className="surface-panel rounded-2xl p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-extrabold">
+                      {v.brand} {v.model} {v.year ? `· ${v.year}` : ""}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold text-muted-foreground">
+                      {v.seats} places {v.color ? `· ${v.color}` : ""}{" "}
+                      {v.insurance_valid_until ? `· assurance jusqu'au ${v.insurance_valid_until}` : ""}
+                    </p>
+                    <div className="mt-3 flex flex-wrap items-center gap-3">
+                      <StatusPill status={status} />
+                      {status !== "approved" ? (
+                        <Link
+                          to="/verification"
+                          className="text-xs font-bold text-primary underline-offset-4 hover:underline"
+                        >
+                          {status === "not_submitted"
+                            ? "Envoyer la carte grise"
+                            : status === "rejected"
+                              ? "Renvoyer la carte grise"
+                              : "Suivre la vérification"}
+                        </Link>
+                      ) : null}
+                    </div>
+                    {status !== "approved" ? (
+                      <p className="mt-2 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                        Vérification du véhicule requise — impossible de publier un trajet avec ce
+                        véhicule.
+                      </p>
+                    ) : null}
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={`Supprimer ${v.brand} ${v.model}`}
+                    onClick={() => remove.mutate(v.id)}
+                    className="rounded-full border border-border p-2 text-destructive hover:border-destructive/50"
+                  >
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
 
         <form

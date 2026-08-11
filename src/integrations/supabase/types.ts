@@ -1207,6 +1207,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      vehicle_verification_statuses: {
+        Args: { _owner_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       account_status: "active" | "suspended" | "banned" | "deleted"
