@@ -185,10 +185,31 @@ function VerificationPage() {
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               E-mail
             </p>
-            <div className="mt-2">
+            <div className="mt-2 flex flex-wrap items-center gap-3">
               <StatusPill status={profile?.email_verified ? "approved" : "pending"} />
+              {!profile?.email_verified && user.email ? (
+                <button
+                  type="button"
+                  onClick={() => resend.mutate()}
+                  disabled={resend.isPending}
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs font-bold hover:border-primary/40 disabled:opacity-60"
+                >
+                  {resend.isPending ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+                  )}
+                  Renvoyer l'e-mail de vérification
+                </button>
+              ) : null}
             </div>
+            {!profile?.email_verified && resend.isSuccess ? (
+              <p aria-live="polite" className="mt-2 text-xs font-semibold text-primary-dark">
+                E-mail envoyé à {user.email} — pensez à vérifier vos spams.
+              </p>
+            ) : null}
           </div>
+
           <div className="surface-panel rounded-2xl p-5">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               Téléphone
