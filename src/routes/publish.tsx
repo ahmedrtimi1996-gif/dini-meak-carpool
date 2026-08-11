@@ -8,7 +8,7 @@ import { RequirementChecklist } from "@/components/profile/RequirementChecklist"
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
 import { MOROCCAN_CITIES } from "@/lib/rides";
-import { canPublish, fetchPublishRequirements } from "@/lib/verification";
+import { canPublish, fetchPublishRequirements, fetchVehicleStatuses } from "@/lib/verification";
 import { myVehicles } from "@/lib/profiles";
 import { commissionFor } from "@/lib/trips";
 import { createTrip } from "@/lib/trips";
