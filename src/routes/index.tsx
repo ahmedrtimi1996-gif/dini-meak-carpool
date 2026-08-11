@@ -12,6 +12,7 @@ import {
   Leaf,
   Users,
   MapPinned,
+  UserRound,
 } from "lucide-react";
 import heroRoad from "@/assets/hero-road.jpg";
 import { SiteHeader } from "@/components/brand/SiteHeader";
@@ -59,6 +60,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { t, city, money } = useI18n();
+  const { user } = useAuth();
   const featured = RIDES.slice(0, 4);
 
   const stats = [
