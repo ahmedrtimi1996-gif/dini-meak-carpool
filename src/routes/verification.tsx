@@ -97,19 +97,38 @@ function VerificationPage() {
     enabled: Boolean(user?.id),
   });
 
+  const vehiclesQuery = useQuery({
+    queryKey: ["my-vehicles", user?.id],
+    queryFn: () => myVehicles(user!.id),
+    enabled: Boolean(user?.id),
+  });
+
+  const vehicleStatusQuery = useQuery({
+    queryKey: ["vehicle-statuses", user?.id],
+    queryFn: () => fetchVehicleStatuses(user!.id),
+    enabled: Boolean(user?.id),
+  });
+
   const upload = useMutation({
-    mutationFn: async (args: { docType: DocType; file: File; expiresOn: string }) =>
+    mutationFn: async (args: {
+      docType: DocType;
+      file: File;
+      expiresOn: string;
+      vehicleId?: string | null;
+    }) =>
       uploadDocument({
         userId: user!.id,
         docType: args.docType,
         file: args.file,
         expiresOn: args.expiresOn || null,
+        vehicleId: args.vehicleId ?? null,
       }),
     onSuccess: async () => {
       setError(null);
       await Promise.all([
         qc.invalidateQueries({ queryKey: ["my-documents"] }),
         qc.invalidateQueries({ queryKey: ["publish-requirements"] }),
+        qc.invalidateQueries({ queryKey: ["vehicle-statuses"] }),
       ]);
       await refresh();
     },
@@ -117,9 +136,19 @@ function VerificationPage() {
     onSettled: () => setBusyType(null),
   });
 
+  const resend = useMutation({
+    mutationFn: () => resendVerificationEmail(user!.email!),
+    onError: (e: Error) => setError(e.message),
+    onSuccess: () => setError(null),
+  });
+
   const [expiry, setExpiry] = useState<Record<string, string>>({});
+  const [vehicleFor, setVehicleFor] = useState<Record<string, string>>({});
   const docs = docsQuery.data ?? [];
   const byType = latestByType(docs);
+  const vehicles = vehiclesQuery.data ?? [];
+  const vehicleStatuses = vehicleStatusQuery.data ?? new Map<string, DocStatus>();
+
 
   async function openDoc(path: string) {
     try {
