@@ -126,7 +126,13 @@ function PublishPage() {
     onError: (e: Error) => setError(e.message),
   });
 
-  const allowed = canPublish(reqQuery.data ?? null);
+  const vehicles = vehiclesQuery.data ?? [];
+  const vehicleStatuses = vehicleStatusQuery.data ?? new Map<string, string>();
+  const verifiedVehicles = vehicles.filter((v) => vehicleStatuses.get(v.id) === "approved");
+  const hasVerifiedVehicle = verifiedVehicles.length > 0;
+  const selectedVehicleVerified =
+    Boolean(draft.vehicleId) && vehicleStatuses.get(draft.vehicleId) === "approved";
+  const allowed = canPublish(reqQuery.data ?? null) && hasVerifiedVehicle;
   const label = "block text-xs font-bold uppercase tracking-widest text-muted-foreground";
   const input =
     "mt-2 w-full rounded-xl border border-input bg-card px-4 py-3 text-sm font-semibold outline-none transition-colors focus:border-primary";
