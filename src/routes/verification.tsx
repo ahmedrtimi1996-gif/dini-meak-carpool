@@ -23,6 +23,7 @@ import {
   type DocType,
 } from "@/lib/verification";
 import { RequirementChecklist } from "@/components/profile/RequirementChecklist";
+import { StatusPill } from "@/components/profile/StatusPill";
 
 export const Route = createFileRoute("/verification")({
   ssr: false,
