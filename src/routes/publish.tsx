@@ -399,17 +399,28 @@ function PublishPage() {
                   </label>
                   <select
                     id="vehicle"
+                    required
                     className={input}
                     value={draft.vehicleId}
                     onChange={(e) => setDraft({ ...draft, vehicleId: e.target.value })}
                   >
-                    <option value="">Sélectionner un véhicule</option>
-                    {(vehiclesQuery.data ?? []).map((v) => (
-                      <option key={v.id} value={v.id}>
-                        {v.brand} {v.model} {v.color ? `· ${v.color}` : ""}
-                      </option>
-                    ))}
+                    <option value="">Sélectionner un véhicule vérifié</option>
+                    {vehicles.map((v) => {
+                      const st = vehicleStatuses.get(v.id) ?? "not_submitted";
+                      return (
+                        <option key={v.id} value={v.id} disabled={st !== "approved"}>
+                          {v.brand} {v.model} {v.color ? `· ${v.color}` : ""} —{" "}
+                          {st === "approved" ? "vérifié" : "non vérifié"}
+                        </option>
+                      );
+                    })}
                   </select>
+                  {draft.vehicleId && !selectedVehicleVerified ? (
+                    <p className="mt-2 text-xs font-bold text-destructive">
+                      Ce véhicule n'est pas vérifié : la publication est bloquée jusqu'à la validation
+                      de sa carte grise.
+                    </p>
+                  ) : null}
                   <Link
                     to="/vehicles"
                     className="mt-2 inline-block text-xs font-bold text-primary underline-offset-4 hover:underline"
