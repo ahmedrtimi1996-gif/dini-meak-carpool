@@ -231,7 +231,7 @@ export async function uploadDocument(opts: {
       doc_type: opts.docType,
       file_url: path,
       status: "pending",
-      expires_on: opts.expiresOn || null,
+      expires_on: hasExpiry(opts.docType) ? opts.expiresOn || null : null,
       vehicle_id: opts.vehicleId || null,
     })
     .select("*")
