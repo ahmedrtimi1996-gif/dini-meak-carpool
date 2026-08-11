@@ -6,6 +6,8 @@ import { SiteHeader } from "@/components/brand/SiteHeader";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { useAuth } from "@/hooks/useAuth";
 import { createVehicle, deleteVehicle, ensureDriverRole, myVehicles } from "@/lib/profiles";
+import { fetchVehicleStatuses, STATUS_LABELS, type DocStatus } from "@/lib/verification";
+import { StatusPill } from "@/routes/verification";
 
 export const Route = createFileRoute("/vehicles")({
   ssr: false,
