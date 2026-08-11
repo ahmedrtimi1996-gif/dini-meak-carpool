@@ -194,10 +194,18 @@ export function latestByType(docs: DriverDocument[]) {
 
 export function effectiveStatus(doc: DriverDocument | undefined): DocStatus {
   if (!doc) return "not_submitted";
+  // Selfies (and any other no-expiry type) never expire.
+  if (!hasExpiry(doc.doc_type)) return doc.status === "expired" ? "pending" : doc.status;
   if (doc.status === "approved" && doc.expires_on && doc.expires_on < new Date().toISOString().slice(0, 10))
     return "expired";
   return doc.status;
 }
+
+/** Latest vehicle-registration document for a given vehicle. */
+export function vehicleRegistrationDoc(docs: DriverDocument[], vehicleId: string) {
+  return docs.find((d) => d.doc_type === "vehicle_registration" && d.vehicle_id === vehicleId);
+}
+
 
 export async function uploadDocument(opts: {
   userId: string;
