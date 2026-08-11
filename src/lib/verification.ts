@@ -73,6 +73,13 @@ export const DRIVER_REQUIRED_DOCS: DocType[] = [
   "insurance",
 ];
 
+/** Document types that never expire (enforced in the database too). */
+export const NO_EXPIRY_DOCS: DocType[] = ["selfie"];
+
+export function hasExpiry(docType: DocType) {
+  return !NO_EXPIRY_DOCS.includes(docType);
+}
+
 export type PublishRequirements = {
   email_verified: boolean;
   phone_verified: boolean;
@@ -81,6 +88,7 @@ export type PublishRequirements = {
   vehicle_verified: boolean;
   insurance_verified: boolean;
   has_vehicle: boolean;
+  has_verified_vehicle: boolean;
   account_active: boolean;
   expired_documents: string[];
 };
@@ -96,6 +104,36 @@ export async function fetchPublishRequirements(userId: string): Promise<PublishR
   const { data, error } = await supabase.rpc("driver_publish_requirements", { _user_id: userId });
   if (error) throw error;
   return data as unknown as PublishRequirements;
+}
+
+/** Per-vehicle verification status, straight from the database (never client-set). */
+export type VehicleStatus = "not_submitted" | "pending" | "under_review" | "approved" | "rejected" | "expired";
+
+export async function fetchVehicleStatuses(ownerId: string): Promise<Map<string, VehicleStatus>> {
+  const { data, error } = await supabase.rpc("vehicle_verification_statuses", {
+    _owner_id: ownerId,
+  });
+  if (error) throw error;
+  const obj = (data ?? {}) as Record<string, VehicleStatus>;
+  return new Map(Object.entries(obj));
+}
+
+/** Resend the Supabase Auth confirmation email for an unverified address. */
+export async function resendVerificationEmail(email: string) {
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: { emailRedirectTo: `${window.location.origin}/verification` },
+  });
+  if (error) {
+    const msg = error.message.toLowerCase();
+    if (error.status === 429 || msg.includes("rate limit") || msg.includes("security purposes")) {
+      throw new Error(
+        "Trop de demandes. Patientez une minute avant de redemander un e-mail de vérification.",
+      );
+    }
+    throw new Error(error.message);
+  }
 }
 
 export function requirementList(r: PublishRequirements | null): RequirementItem[] {
