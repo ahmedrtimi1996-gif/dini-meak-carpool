@@ -236,9 +236,15 @@ function VerificationPage() {
 
         <div className="mt-8 space-y-4">
           {ROWS.map((row) => {
-            const doc = byType.get(row.type);
+            const perVehicle = row.type === "vehicle_registration";
+            const selectedVehicle = perVehicle ? (vehicleFor[row.type] ?? vehicles[0]?.id ?? "") : "";
+            const doc = perVehicle
+              ? docs.find((d) => d.doc_type === row.type && d.vehicle_id === selectedVehicle) ??
+                docs.find((d) => d.doc_type === row.type && !d.vehicle_id)
+              : byType.get(row.type);
             const status = effectiveStatus(doc);
-            const remaining = daysUntil(doc?.expires_on ?? null);
+            const showExpiry = hasExpiry(row.type);
+            const remaining = showExpiry ? daysUntil(doc?.expires_on ?? null) : null;
             return (
               <article key={row.type} className="surface-panel rounded-2xl p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
@@ -269,18 +275,55 @@ function VerificationPage() {
                   </p>
                 ) : null}
 
-                <div className="mt-4 flex flex-wrap items-end gap-3">
-                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    Date d'expiration
-                    <input
-                      type="date"
-                      className="mt-1 block rounded-xl border border-input bg-card px-3 py-2 text-sm font-semibold"
-                      value={expiry[row.type] ?? ""}
-                      onChange={(e) => setExpiry({ ...expiry, [row.type]: e.target.value })}
-                    />
-                  </label>
+                {perVehicle && vehicles.length === 0 ? (
+                  <p className="mt-3 rounded-xl bg-amber-500/15 px-3 py-2 text-xs font-semibold text-amber-800 dark:text-amber-200">
+                    Vérification du véhicule requise. Ajoutez d'abord un véhicule pour envoyer sa
+                    carte grise.{" "}
+                    <Link to="/vehicles" className="underline underline-offset-4">
+                      Ajouter un véhicule
+                    </Link>
+                  </p>
+                ) : null}
 
-                  <label className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground">
+                <div className="mt-4 flex flex-wrap items-end gap-3">
+                  {perVehicle && vehicles.length > 0 ? (
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Véhicule concerné
+                      <select
+                        className="mt-1 block rounded-xl border border-input bg-card px-3 py-2 text-sm font-semibold"
+                        value={selectedVehicle}
+                        onChange={(e) => setVehicleFor({ ...vehicleFor, [row.type]: e.target.value })}
+                      >
+                        {vehicles.map((v) => (
+                          <option key={v.id} value={v.id}>
+                            {v.brand} {v.model}
+                            {v.plate ? ` · ${v.plate}` : ""} —{" "}
+                            {STATUS_LABELS[(vehicleStatuses.get(v.id) ?? "not_submitted") as DocStatus]}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  ) : null}
+
+                  {showExpiry ? (
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Date d'expiration
+                      <input
+                        type="date"
+                        className="mt-1 block rounded-xl border border-input bg-card px-3 py-2 text-sm font-semibold"
+                        value={expiry[row.type] ?? ""}
+                        onChange={(e) => setExpiry({ ...expiry, [row.type]: e.target.value })}
+                      />
+                    </label>
+                  ) : null}
+
+                  <label
+                    className={`inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground ${
+                      perVehicle && vehicles.length === 0
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }`}
+                  >
                     {busyType === row.type ? (
                       <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                     ) : (
@@ -291,6 +334,7 @@ function VerificationPage() {
                       type="file"
                       accept="image/*,application/pdf"
                       className="sr-only"
+                      disabled={perVehicle && vehicles.length === 0}
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
@@ -298,7 +342,8 @@ function VerificationPage() {
                         upload.mutate({
                           docType: row.type,
                           file,
-                          expiresOn: expiry[row.type] ?? "",
+                          expiresOn: showExpiry ? (expiry[row.type] ?? "") : "",
+                          vehicleId: perVehicle ? selectedVehicle : null,
                         });
                         e.target.value = "";
                       }}
@@ -320,6 +365,30 @@ function VerificationPage() {
             );
           })}
         </div>
+
+        {vehicles.length > 0 ? (
+          <section className="surface-panel mt-8 rounded-2xl p-5">
+            <h2 className="flex items-center gap-2 text-sm font-extrabold">
+              <Car className="h-4 w-4 text-primary" aria-hidden="true" />
+              Vérification de mes véhicules
+            </h2>
+            <ul className="mt-4 space-y-2">
+              {vehicles.map((v) => (
+                <li key={v.id} className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-sm font-semibold">
+                    {v.brand} {v.model}
+                    {v.plate ? ` · ${v.plate}` : ""}
+                  </span>
+                  <StatusPill status={(vehicleStatuses.get(v.id) ?? "not_submitted") as DocStatus} />
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Vous pouvez publier un trajet uniquement avec un véhicule vérifié.
+            </p>
+          </section>
+        ) : null}
+
 
         <div className="mt-10">
           <RequirementChecklist
