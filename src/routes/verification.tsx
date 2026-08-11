@@ -1,18 +1,22 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Upload, Eye, ShieldCheck } from "lucide-react";
+import { Loader2, Upload, Eye, ShieldCheck, Mail, Car } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/brand/SiteHeader";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { useAuth } from "@/hooks/useAuth";
+import { myVehicles } from "@/lib/profiles";
 import {
   DOC_LABELS,
   STATUS_LABELS,
   daysUntil,
   effectiveStatus,
   fetchPublishRequirements,
+  fetchVehicleStatuses,
+  hasExpiry,
   latestByType,
   listMyDocuments,
+  resendVerificationEmail,
   signedDocumentUrl,
   uploadDocument,
   type DocStatus,
