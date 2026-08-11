@@ -71,6 +71,24 @@ function ProfileEditPage() {
     onError: (e: Error) => setError(e.message),
   });
 
+  const resend = useMutation({
+    mutationFn: () => resendVerificationEmail(user!.email!),
+    onSuccess: () => setError(null),
+    onError: (e: Error) => setError(e.message),
+  });
+
+  const vehiclesQuery = useQuery({
+    queryKey: ["my-vehicles", user?.id],
+    queryFn: () => myVehicles(user!.id),
+    enabled: Boolean(user?.id) && isDriver,
+  });
+
+  const statusQuery = useQuery({
+    queryKey: ["vehicle-statuses", user?.id],
+    queryFn: () => fetchVehicleStatuses(user!.id),
+    enabled: Boolean(user?.id) && isDriver,
+  });
+
   const input =
     "mt-2 w-full rounded-xl border border-input bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-primary";
   const label = "block text-xs font-bold uppercase tracking-widest text-muted-foreground";
@@ -83,6 +101,9 @@ function ProfileEditPage() {
     );
   }
 
+  const vehicles = vehiclesQuery.data ?? [];
+  const hasVerifiedVehicle = vehicles.some((v) => statusQuery.data?.get(v.id) === "approved");
+
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
@@ -91,6 +112,75 @@ function ProfileEditPage() {
         <div className="mt-4">
           <VerificationBadges flags={profile ?? {}} />
         </div>
+
+        {!profile?.email_verified && user.email ? (
+          <div className="mt-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5">
+            <p className="text-sm font-extrabold text-amber-900 dark:text-amber-200">
+              Votre adresse e-mail n'est pas encore vérifiée.
+            </p>
+            <button
+              type="button"
+              onClick={() => resend.mutate()}
+              disabled={resend.isPending}
+              className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60"
+            >
+              {resend.isPending ? (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              ) : (
+                <Mail className="h-4 w-4" aria-hidden="true" />
+              )}
+              Renvoyer l'e-mail de vérification
+            </button>
+            {resend.isSuccess ? (
+              <p aria-live="polite" className="mt-2 text-xs font-semibold text-primary-dark">
+                E-mail envoyé à {user.email} — pensez à vérifier vos spams.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+
+        {isDriver ? (
+          <section className="surface-panel mt-6 rounded-2xl p-5">
+            <h2 className="flex items-center gap-2 text-sm font-extrabold">
+              <Car className="h-4 w-4 text-primary" aria-hidden="true" />
+              Vérification des véhicules
+            </h2>
+            {vehicles.length === 0 ? (
+              <p className="mt-3 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                Vérification du véhicule requise.{" "}
+                <Link to="/vehicles" className="text-primary underline underline-offset-4">
+                  Ajouter un véhicule
+                </Link>
+              </p>
+            ) : (
+              <>
+                <ul className="mt-3 space-y-2">
+                  {vehicles.map((v) => (
+                    <li key={v.id} className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-sm font-semibold">
+                        {v.brand} {v.model}
+                        {v.plate ? ` · ${v.plate}` : ""}
+                      </span>
+                      <StatusPill
+                        status={(statusQuery.data?.get(v.id) ?? "not_submitted") as DocStatus}
+                      />
+                    </li>
+                  ))}
+                </ul>
+                {!hasVerifiedVehicle ? (
+                  <p className="mt-3 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                    Vérification du véhicule requise : aucun véhicule vérifié, la publication de
+                    trajets est bloquée.{" "}
+                    <Link to="/verification" className="text-primary underline underline-offset-4">
+                      Envoyer la carte grise
+                    </Link>
+                  </p>
+                ) : null}
+              </>
+            )}
+          </section>
+        ) : null}
+
 
         <form
           className="surface-panel mt-8 space-y-6 rounded-2xl p-6"
