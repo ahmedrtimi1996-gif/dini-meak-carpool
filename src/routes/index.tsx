@@ -20,6 +20,7 @@ import { SiteFooter } from "@/components/brand/SiteFooter";
 import { SearchBar } from "@/components/rides/SearchBar";
 import { RideCard } from "@/components/rides/RideCard";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/hooks/useAuth";
 import { POPULAR_ROUTES, RIDES } from "@/lib/rides";
 
 export const Route = createFileRoute("/")({
