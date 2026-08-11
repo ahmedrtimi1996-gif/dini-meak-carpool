@@ -54,6 +54,13 @@ function VehiclesPage() {
     enabled: Boolean(user?.id),
   });
 
+  const statuses = useQuery({
+    queryKey: ["vehicle-statuses", user?.id],
+    queryFn: () => fetchVehicleStatuses(user!.id),
+    enabled: Boolean(user?.id),
+  });
+
+
   const add = useMutation({
     mutationFn: async () => {
       await ensureDriverRole(user!.id);
