@@ -149,6 +149,14 @@ export function requirementList(r: PublishRequirements | null): RequirementItem[
       ok: Boolean(req.license_verified),
     },
     { key: "has_vehicle", label: "Véhicule enregistré", ok: Boolean(req.has_vehicle) },
+    {
+      key: "has_verified_vehicle",
+      label: "Véhicule vérifié",
+      ok: Boolean(req.has_verified_vehicle),
+      ...(req.has_verified_vehicle
+        ? {}
+        : { hint: "carte grise du véhicule à valider par l'équipe" }),
+    },
     { key: "vehicle_verified", label: "Carte grise vérifiée", ok: Boolean(req.vehicle_verified) },
     { key: "insurance_verified", label: "Assurance vérifiée", ok: Boolean(req.insurance_verified) },
     { key: "account_active", label: "Compte en règle", ok: Boolean(req.account_active) },
