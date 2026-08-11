@@ -96,6 +96,13 @@ function PublishPage() {
     enabled: Boolean(user?.id),
   });
 
+  const vehicleStatusQuery = useQuery({
+    queryKey: ["vehicle-statuses", user?.id],
+    queryFn: () => fetchVehicleStatuses(user!.id),
+    enabled: Boolean(user?.id),
+  });
+
+
   const publish = useMutation({
     mutationFn: async (d: Draft) =>
       createTrip({
