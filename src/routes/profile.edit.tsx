@@ -1,11 +1,13 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Loader2, Mail, Car } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/brand/SiteHeader";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { useAuth } from "@/hooks/useAuth";
-import { updateMyProfile } from "@/lib/profiles";
+import { myVehicles, updateMyProfile } from "@/lib/profiles";
+import { fetchVehicleStatuses, resendVerificationEmail, type DocStatus } from "@/lib/verification";
+import { StatusPill } from "@/components/profile/StatusPill";
 import { VerificationBadges } from "@/components/profile/VerificationBadges";
 
 export const Route = createFileRoute("/profile/edit")({
