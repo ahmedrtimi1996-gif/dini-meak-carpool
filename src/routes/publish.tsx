@@ -155,11 +155,39 @@ function PublishPage() {
         <h1 className="text-3xl font-extrabold">{t("publish.title")}</h1>
         <p className="mt-2 text-muted-foreground">{t("publish.subtitle")}</p>
 
+        {!hasVerifiedVehicle && !vehicleStatusQuery.isLoading ? (
+          <div className="mt-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-6">
+            <p className="text-sm font-extrabold text-amber-900 dark:text-amber-200">
+              La vérification du véhicule est obligatoire avant de publier un trajet.
+            </p>
+            <p className="mt-2 text-sm font-semibold text-amber-900/80 dark:text-amber-200/80">
+              {vehicles.length === 0
+                ? "Aucun véhicule enregistré. Ajoutez un véhicule puis envoyez sa carte grise."
+                : "Aucun de vos véhicules n'est encore vérifié. Envoyez la carte grise du véhicule concerné."}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link
+                to="/vehicles"
+                className="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground"
+              >
+                Ajouter un véhicule
+              </Link>
+              <Link
+                to="/verification"
+                className="rounded-full border border-border px-5 py-2.5 text-sm font-semibold"
+              >
+                Envoyer la carte grise
+              </Link>
+            </div>
+          </div>
+        ) : null}
+
         {!allowed ? (
           <div className="mt-8">
             <RequirementChecklist requirements={reqQuery.data ?? null} />
           </div>
         ) : null}
+
 
         {created ? (
           <div className="mt-8 rounded-2xl border border-primary/30 bg-primary-soft p-6">
