@@ -55,7 +55,7 @@ const ROWS: { type: DocType; note?: string }[] = [
   { type: "insurance", note: "Attestation en cours de validité" },
 ];
 
-export { StatusPill };
+export { StatusPill } from "@/components/profile/StatusPill";
 
 function VerificationPage() {
   const { user, profile, loading, refresh } = useAuth();
