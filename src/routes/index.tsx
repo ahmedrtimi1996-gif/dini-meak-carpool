@@ -108,8 +108,43 @@ function Home() {
             <p className="mt-6 max-w-xl text-base leading-relaxed text-primary-foreground/85 sm:text-lg">
               {t("hero.subtitle")}
             </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              {user ? (
+                <>
+                  <Link
+                    to="/profile/edit"
+                    className="inline-flex items-center gap-2 rounded-full bg-primary-foreground px-6 py-3 text-sm font-bold text-primary-dark shadow-glow transition-transform hover:-translate-y-0.5"
+                  >
+                    <UserRound className="h-4 w-4" aria-hidden="true" />
+                    Mon profil
+                  </Link>
+                  <Link
+                    to="/dashboard"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-primary-foreground backdrop-blur transition-colors hover:bg-white/20"
+                  >
+                    Mon espace conducteur
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/auth"
+                    className="inline-flex items-center gap-2 rounded-full bg-primary-foreground px-6 py-3 text-sm font-bold text-primary-dark shadow-glow transition-transform hover:-translate-y-0.5"
+                  >
+                    {t("nav.signup")}
+                  </Link>
+                  <Link
+                    to="/auth"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-primary-foreground backdrop-blur transition-colors hover:bg-white/20"
+                  >
+                    {t("nav.login")}
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </section>
+
 
         {/* Search bar overlapping hero */}
         <section className="relative z-10 mx-auto -mt-20 w-full max-w-5xl px-4 sm:px-6 lg:px-8">
