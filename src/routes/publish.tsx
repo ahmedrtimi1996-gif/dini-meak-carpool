@@ -224,6 +224,16 @@ function PublishPage() {
             onSubmit={(e) => {
               e.preventDefault();
               setError(null);
+              if (!hasVerifiedVehicle) {
+                setError("La vérification du véhicule est obligatoire avant de publier un trajet.");
+                return;
+              }
+              if (!selectedVehicleVerified) {
+                setError(
+                  "Ce véhicule n'est pas vérifié. Sélectionnez un véhicule vérifié ou envoyez sa carte grise depuis le centre de vérification.",
+                );
+                return;
+              }
               if (!allowed) {
                 setError("Vérification incomplète : complétez les éléments listés ci-dessus.");
                 return;
