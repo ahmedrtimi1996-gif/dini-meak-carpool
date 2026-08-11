@@ -31,7 +31,7 @@ export const Route = createFileRoute("/profile/edit")({
 });
 
 function ProfileEditPage() {
-  const { user, profile, loading, refresh } = useAuth();
+  const { user, profile, loading, refresh, isDriver } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     first_name: "",
