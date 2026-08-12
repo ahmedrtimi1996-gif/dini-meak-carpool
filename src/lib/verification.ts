@@ -120,9 +120,14 @@ export async function fetchVehicleStatuses(ownerId: string): Promise<Map<string,
 
 /** Resend the Supabase Auth confirmation email for an unverified address. */
 export async function resendVerificationEmail(email: string) {
+  const { data: current } = await supabase.auth.getUser();
+  if (current.user?.email_confirmed_at) {
+    throw new Error("Cette adresse e-mail est déjà vérifiée.");
+  }
+  const target = current.user?.email ?? email;
   const { error } = await supabase.auth.resend({
     type: "signup",
-    email,
+    email: target,
     options: { emailRedirectTo: `${window.location.origin}/verification` },
   });
   if (error) {
