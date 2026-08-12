@@ -75,13 +75,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
       if (!active) return;
       setSession(next);
-      void load(next?.user?.id);
+      void load(next?.user?.id, next?.user?.email_confirmed_at ?? null);
     });
 
     void supabase.auth.getSession().then(async ({ data }) => {
       if (!active) return;
       setSession(data.session);
-      await load(data.session?.user?.id);
+      await load(data.session?.user?.id, data.session?.user?.email_confirmed_at ?? null);
       setLoading(false);
     });
 
@@ -94,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(async () => {
     const { data } = await supabase.auth.getSession();
     setSession(data.session);
-    await load(data.session?.user?.id);
+    await load(data.session?.user?.id, data.session?.user?.email_confirmed_at ?? null);
   }, [load]);
 
   const signOut = useCallback(async () => {
