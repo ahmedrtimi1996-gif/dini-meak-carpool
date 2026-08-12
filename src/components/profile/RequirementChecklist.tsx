@@ -30,9 +30,12 @@ export function RequirementChecklist({
             {i.ok ? (
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
             ) : (
-              <X className="mt-0.5 h-4 w-4 shrink-0 text-destructive" aria-hidden="true" />
+              <X
+                className={`mt-0.5 h-4 w-4 shrink-0 ${i.optional ? "text-muted-foreground" : "text-destructive"}`}
+                aria-hidden="true"
+              />
             )}
-            <span className={i.ok ? "text-foreground/80" : "text-foreground"}>
+            <span className={i.ok || i.optional ? "text-foreground/80" : "text-foreground"}>
               {i.label}
               {i.hint ? <em className="ms-1 font-normal text-muted-foreground">({i.hint})</em> : null}
             </span>
