@@ -183,7 +183,7 @@ export function requirementList(r: PublishRequirements | null): RequirementItem[
 }
 
 export function canPublish(r: PublishRequirements | null) {
-  return requirementList(r).every((i) => i.ok);
+  return requirementList(r).every((i) => i.ok || i.optional);
 }
 
 /** ---------- Documents ---------- */
