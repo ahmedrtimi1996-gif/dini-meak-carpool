@@ -148,7 +148,13 @@ export function requirementList(r: PublishRequirements | null): RequirementItem[
   const expired = req.expired_documents ?? [];
   return [
     { key: "email_verified", label: "E-mail vérifié", ok: Boolean(req.email_verified) },
-    { key: "phone_verified", label: "Téléphone vérifié", ok: Boolean(req.phone_verified) },
+    {
+      key: "phone_verified",
+      label: "Téléphone vérifié",
+      ok: Boolean(req.phone_verified),
+      optional: true,
+      hint: "optionnel",
+    },
     { key: "identity_verified", label: "Identité vérifiée", ok: Boolean(req.identity_verified) },
     {
       key: "license_verified",
