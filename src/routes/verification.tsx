@@ -196,7 +196,7 @@ function VerificationPage() {
 
           <div className="surface-panel rounded-2xl p-5">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              Téléphone
+              Téléphone <span className="normal-case text-muted-foreground">(optionnel)</span>
             </p>
             <div className="mt-2 flex items-center gap-3">
               <StatusPill status={profile?.phone_verified ? "approved" : "not_submitted"} />

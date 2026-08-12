@@ -12,7 +12,7 @@ import {
   Leaf,
   Users,
   MapPinned,
-  UserRound,
+  LayoutDashboard,
 } from "lucide-react";
 import heroRoad from "@/assets/hero-road.jpg";
 import { SiteHeader } from "@/components/brand/SiteHeader";
