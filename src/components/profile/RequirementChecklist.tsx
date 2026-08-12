@@ -16,7 +16,7 @@ export function RequirementChecklist({
   showCta?: boolean;
 }) {
   const items = requirementList(requirements);
-  const missing = items.filter((i) => !i.ok);
+  const missing = items.filter((i) => !i.ok && !i.optional);
 
   return (
     <section className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-6">
