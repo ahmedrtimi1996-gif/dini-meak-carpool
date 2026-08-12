@@ -12,7 +12,7 @@ import {
   Leaf,
   Users,
   MapPinned,
-  UserRound,
+  LayoutDashboard,
 } from "lucide-react";
 import heroRoad from "@/assets/hero-road.jpg";
 import { SiteHeader } from "@/components/brand/SiteHeader";
@@ -113,21 +113,13 @@ function Home() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               {user ? (
-                <>
-                  <Link
-                    to="/profile/edit"
-                    className="inline-flex items-center gap-2 rounded-full bg-primary-foreground px-6 py-3 text-sm font-bold text-primary-dark shadow-glow transition-transform hover:-translate-y-0.5"
-                  >
-                    <UserRound className="h-4 w-4" aria-hidden="true" />
-                    Mon profil
-                  </Link>
-                  <Link
-                    to="/dashboard"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-primary-foreground backdrop-blur transition-colors hover:bg-white/20"
-                  >
-                    Mon espace conducteur
-                  </Link>
-                </>
+                <Link
+                  to="/dashboard"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary-foreground px-6 py-3 text-sm font-bold text-primary-dark shadow-glow transition-transform hover:-translate-y-0.5"
+                >
+                  <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
+                  Mon espace conducteur
+                </Link>
               ) : (
                 <>
                   <Link

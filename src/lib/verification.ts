@@ -98,6 +98,8 @@ export type RequirementItem = {
   label: string;
   ok: boolean;
   hint?: string;
+  /** Optional requirements are informational only and never block publication. */
+  optional?: boolean;
 };
 
 export async function fetchPublishRequirements(userId: string): Promise<PublishRequirements> {
@@ -146,7 +148,13 @@ export function requirementList(r: PublishRequirements | null): RequirementItem[
   const expired = req.expired_documents ?? [];
   return [
     { key: "email_verified", label: "E-mail vérifié", ok: Boolean(req.email_verified) },
-    { key: "phone_verified", label: "Téléphone vérifié", ok: Boolean(req.phone_verified) },
+    {
+      key: "phone_verified",
+      label: "Téléphone vérifié",
+      ok: Boolean(req.phone_verified),
+      optional: true,
+      hint: "optionnel",
+    },
     { key: "identity_verified", label: "Identité vérifiée", ok: Boolean(req.identity_verified) },
     {
       key: "license_verified",
@@ -175,7 +183,7 @@ export function requirementList(r: PublishRequirements | null): RequirementItem[
 }
 
 export function canPublish(r: PublishRequirements | null) {
-  return requirementList(r).every((i) => i.ok);
+  return requirementList(r).every((i) => i.ok || i.optional);
 }
 
 /** ---------- Documents ---------- */

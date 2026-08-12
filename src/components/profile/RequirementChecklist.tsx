@@ -16,7 +16,7 @@ export function RequirementChecklist({
   showCta?: boolean;
 }) {
   const items = requirementList(requirements);
-  const missing = items.filter((i) => !i.ok);
+  const missing = items.filter((i) => !i.ok && !i.optional);
 
   return (
     <section className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-6">
@@ -30,9 +30,12 @@ export function RequirementChecklist({
             {i.ok ? (
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
             ) : (
-              <X className="mt-0.5 h-4 w-4 shrink-0 text-destructive" aria-hidden="true" />
+              <X
+                className={`mt-0.5 h-4 w-4 shrink-0 ${i.optional ? "text-muted-foreground" : "text-destructive"}`}
+                aria-hidden="true"
+              />
             )}
-            <span className={i.ok ? "text-foreground/80" : "text-foreground"}>
+            <span className={i.ok || i.optional ? "text-foreground/80" : "text-foreground"}>
               {i.label}
               {i.hint ? <em className="ms-1 font-normal text-muted-foreground">({i.hint})</em> : null}
             </span>
