@@ -98,6 +98,8 @@ export type RequirementItem = {
   label: string;
   ok: boolean;
   hint?: string;
+  /** Optional requirements are informational only and never block publication. */
+  optional?: boolean;
 };
 
 export async function fetchPublishRequirements(userId: string): Promise<PublishRequirements> {
