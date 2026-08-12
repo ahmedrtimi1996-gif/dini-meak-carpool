@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [roles, setRoles] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const load = useCallback(async (uid: string | undefined) => {
+  const load = useCallback(async (uid: string | undefined, confirmedAt?: string | null) => {
     if (!uid) {
       setProfile(null);
       setRoles([]);
@@ -56,7 +56,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", uid),
     ]);
-    setProfile((p as Profile) ?? null);
+    let prof = (p as Profile) ?? null;
+    // Supabase Auth confirms the email; mirror that onto the profile badge.
+    if (prof && confirmedAt && !prof.email_verified) {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ email_verified: true })
+        .eq("id", uid);
+      if (!error) prof = { ...prof, email_verified: true };
+    }
+    setProfile(prof);
     setRoles((r ?? []).map((row) => row.role as string));
   }, []);
 
