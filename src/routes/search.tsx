@@ -50,14 +50,26 @@ function SearchPage() {
   const [sort, setSort] = useState<Sort>("early");
   const [maxPrice, setMaxPrice] = useState(300);
 
+  const { data: trips = [], isLoading, error } = useQuery({
+    queryKey: ["search-trips", params.from, params.to, params.date, params.seats],
+    queryFn: () =>
+      searchTrips({
+        ...(params.from ? { from: params.from } : {}),
+        ...(params.to ? { to: params.to } : {}),
+        ...(params.date ? { date: params.date } : {}),
+        ...(params.seats ? { seats: params.seats } : {}),
+      }),
+  });
+
   const results = useMemo(() => {
-    const list = filterRides(RIDES, params).filter((r) => r.price <= maxPrice);
+    const list = trips.map(tripToRide).filter((r) => r.price <= maxPrice);
     return [...list].sort((a, b) => {
       if (sort === "price") return a.price - b.price;
       if (sort === "rating") return b.rating - a.rating;
       return `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`);
     });
-  }, [params, sort, maxPrice]);
+  }, [trips, sort, maxPrice]);
+
 
   return (
     <div className="min-h-screen bg-background">
