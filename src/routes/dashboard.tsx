@@ -66,6 +66,21 @@ function DashboardPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["my-trips"] }),
   });
 
+  const driverBookingsQuery = useQuery({
+    queryKey: ["driver-bookings", user?.id],
+    queryFn: () => driverBookings(user!.id),
+    enabled: Boolean(user?.id),
+  });
+
+  const decide = useMutation({
+    mutationFn: (args: { id: string; status: "accepted" | "rejected" }) =>
+      setBookingStatus(args.id, args.status),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ["driver-bookings"] });
+      void qc.invalidateQueries({ queryKey: ["my-trips"] });
+    },
+  });
+
   if (loading || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center" role="status" aria-live="polite">
