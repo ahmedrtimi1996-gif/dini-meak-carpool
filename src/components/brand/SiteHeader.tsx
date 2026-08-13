@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X, Plus, UserRound, LayoutDashboard, ShieldCheck, LogOut } from "lucide-react";
+import { Menu, X, Plus, UserRound, LayoutDashboard, ShieldCheck, LogOut, Ticket } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
