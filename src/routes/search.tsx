@@ -143,9 +143,19 @@ function SearchPage() {
 
           <section>
             <h1 className="text-2xl font-extrabold">
-              {results.length} {t("trips.results")}
+              {isLoading ? "…" : results.length} {t("trips.results")}
             </h1>
-            {results.length === 0 ? (
+            {isLoading ? (
+              <div className="mt-6 grid gap-4">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="h-32 animate-pulse rounded-2xl bg-muted" />
+                ))}
+              </div>
+            ) : error ? (
+              <div className="mt-8 rounded-2xl border border-dashed border-destructive/40 p-12 text-center">
+                <p className="font-bold">{(error as Error).message}</p>
+              </div>
+            ) : results.length === 0 ? (
               <div className="mt-8 rounded-2xl border border-dashed border-border p-12 text-center">
                 <p className="font-bold">{t("trips.empty")}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{t("trips.emptyHint")}</p>
@@ -157,6 +167,8 @@ function SearchPage() {
                 ))}
               </div>
             )}
+          </section>
+
           </section>
         </div>
       </main>
