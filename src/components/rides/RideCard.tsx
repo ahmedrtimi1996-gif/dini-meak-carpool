@@ -75,13 +75,17 @@ export function RideCard({ ride }: { ride: Ride }) {
           </span>
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition-transform hover:-translate-y-0.5"
+            onClick={() => setOpen(true)}
+            disabled={ride.seats < 1}
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-50"
           >
             {t("trips.book")}
             <ArrowRight className="h-4 w-4 rtl:rotate-180" />
           </button>
         </div>
       </div>
+
+      {open && <BookingDialog ride={ride} onClose={() => setOpen(false)} />}
     </article>
   );
 }
