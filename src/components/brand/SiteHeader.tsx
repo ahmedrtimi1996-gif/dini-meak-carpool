@@ -86,6 +86,14 @@ export function SiteHeader() {
                     Mon profil
                   </Link>
                   <Link
+                    to="/bookings"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-muted"
+                  >
+                    <Ticket className="h-4 w-4" aria-hidden="true" />
+                    Mes réservations
+                  </Link>
+                  <Link
                     to="/dashboard"
                     onClick={() => setMenuOpen(false)}
                     className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-muted"
