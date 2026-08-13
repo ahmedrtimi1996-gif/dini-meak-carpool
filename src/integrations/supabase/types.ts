@@ -1199,6 +1199,41 @@ export type Database = {
     }
     Functions: {
       admin_dashboard_stats: { Args: never; Returns: Json }
+      create_booking: {
+        Args: {
+          _dropoff_note?: string
+          _message?: string
+          _pickup_note?: string
+          _seats: number
+          _trip_id: string
+        }
+        Returns: {
+          commission: number
+          created_at: string
+          currency: string
+          driver_id: string
+          dropoff_note: string | null
+          id: string
+          is_waitlist: boolean
+          message: string | null
+          passenger_id: string
+          payment_method: string | null
+          payment_status: Database["public"]["Enums"]["payment_status"]
+          pickup_note: string | null
+          seats: number
+          status: Database["public"]["Enums"]["booking_status"]
+          total_price: number
+          trip_id: string
+          unit_price: number
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       driver_publish_requirements: { Args: { _user_id: string }; Returns: Json }
       has_role: {
         Args: {
