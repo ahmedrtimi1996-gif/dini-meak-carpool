@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X, Plus, UserRound, LayoutDashboard, ShieldCheck, LogOut } from "lucide-react";
+import { Menu, X, Plus, UserRound, LayoutDashboard, ShieldCheck, LogOut, Ticket } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -84,6 +84,14 @@ export function SiteHeader() {
                   >
                     <UserRound className="h-4 w-4" aria-hidden="true" />
                     Mon profil
+                  </Link>
+                  <Link
+                    to="/bookings"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-muted"
+                  >
+                    <Ticket className="h-4 w-4" aria-hidden="true" />
+                    Mes réservations
                   </Link>
                   <Link
                     to="/dashboard"
