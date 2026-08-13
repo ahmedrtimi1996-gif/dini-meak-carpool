@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import { z } from "zod";
@@ -7,7 +8,8 @@ import { SiteFooter } from "@/components/brand/SiteFooter";
 import { SearchBar } from "@/components/rides/SearchBar";
 import { RideCard } from "@/components/rides/RideCard";
 import { useI18n } from "@/lib/i18n";
-import { RIDES, filterRides } from "@/lib/rides";
+import { searchTrips, tripToRide } from "@/lib/trips";
+
 
 const searchSchema = z.object({
   from: z.string().optional(),
@@ -48,14 +50,26 @@ function SearchPage() {
   const [sort, setSort] = useState<Sort>("early");
   const [maxPrice, setMaxPrice] = useState(300);
 
+  const { data: trips = [], isLoading, error } = useQuery({
+    queryKey: ["search-trips", params.from, params.to, params.date, params.seats],
+    queryFn: () =>
+      searchTrips({
+        ...(params.from ? { from: params.from } : {}),
+        ...(params.to ? { to: params.to } : {}),
+        ...(params.date ? { date: params.date } : {}),
+        ...(params.seats ? { seats: params.seats } : {}),
+      }),
+  });
+
   const results = useMemo(() => {
-    const list = filterRides(RIDES, params).filter((r) => r.price <= maxPrice);
+    const list = trips.map(tripToRide).filter((r) => r.price <= maxPrice);
     return [...list].sort((a, b) => {
       if (sort === "price") return a.price - b.price;
       if (sort === "rating") return b.rating - a.rating;
       return `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`);
     });
-  }, [params, sort, maxPrice]);
+  }, [trips, sort, maxPrice]);
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -129,9 +143,19 @@ function SearchPage() {
 
           <section>
             <h1 className="text-2xl font-extrabold">
-              {results.length} {t("trips.results")}
+              {isLoading ? "…" : results.length} {t("trips.results")}
             </h1>
-            {results.length === 0 ? (
+            {isLoading ? (
+              <div className="mt-6 grid gap-4">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="h-32 animate-pulse rounded-2xl bg-muted" />
+                ))}
+              </div>
+            ) : error ? (
+              <div className="mt-8 rounded-2xl border border-dashed border-destructive/40 p-12 text-center">
+                <p className="font-bold">{(error as Error).message}</p>
+              </div>
+            ) : results.length === 0 ? (
               <div className="mt-8 rounded-2xl border border-dashed border-border p-12 text-center">
                 <p className="font-bold">{t("trips.empty")}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{t("trips.emptyHint")}</p>
