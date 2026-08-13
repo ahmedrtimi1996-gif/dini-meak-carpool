@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import { z } from "zod";
@@ -7,7 +8,8 @@ import { SiteFooter } from "@/components/brand/SiteFooter";
 import { SearchBar } from "@/components/rides/SearchBar";
 import { RideCard } from "@/components/rides/RideCard";
 import { useI18n } from "@/lib/i18n";
-import { RIDES, filterRides } from "@/lib/rides";
+import { searchTrips, tripToRide } from "@/lib/trips";
+
 
 const searchSchema = z.object({
   from: z.string().optional(),
