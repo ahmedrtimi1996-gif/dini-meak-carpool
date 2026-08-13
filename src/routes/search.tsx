@@ -168,8 +168,6 @@ function SearchPage() {
               </div>
             )}
           </section>
-
-          </section>
         </div>
       </main>
 
