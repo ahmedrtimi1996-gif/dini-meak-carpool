@@ -74,9 +74,9 @@ export async function createBooking(input: CreateBookingInput): Promise<BookingR
   const { data, error } = await supabase.rpc("create_booking", {
     _trip_id: input.tripId,
     _seats: input.seats,
-    _message: input.message ?? undefined,
-    _pickup_note: input.pickupNote ?? undefined,
-    _dropoff_note: input.dropoffNote ?? undefined,
+    ...(input.message ? { _message: input.message } : {}),
+    ...(input.pickupNote ? { _pickup_note: input.pickupNote } : {}),
+    ...(input.dropoffNote ? { _dropoff_note: input.dropoffNote } : {}),
   });
   if (error) throw error;
   if (!data) throw new Error("La réservation n'a pas été confirmée par la base de données.");
