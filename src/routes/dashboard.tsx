@@ -9,6 +9,7 @@ import { useI18n } from "@/lib/i18n";
 import { myTrips, tripBookingCounts, updateTripStatus } from "@/lib/trips";
 import { canPublish, fetchPublishRequirements } from "@/lib/verification";
 import { RequirementChecklist } from "@/components/profile/RequirementChecklist";
+import { BOOKING_STATUS_LABEL, driverBookings, setBookingStatus } from "@/lib/bookings";
 
 export const Route = createFileRoute("/dashboard")({
   ssr: false,
