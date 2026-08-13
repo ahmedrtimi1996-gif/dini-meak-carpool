@@ -176,6 +176,62 @@ function DashboardPage() {
             ))}
           </ul>
         )}
+
+        <h2 className="mt-12 text-xl font-extrabold">Réservations reçues</h2>
+        {driverBookingsQuery.isLoading ? (
+          <p className="mt-4 text-sm text-muted-foreground">Chargement…</p>
+        ) : (driverBookingsQuery.data ?? []).length === 0 ? (
+          <p className="mt-4 rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+            Aucune réservation reçue pour le moment.
+          </p>
+        ) : (
+          <ul className="mt-4 space-y-3">
+            {(driverBookingsQuery.data ?? []).map((b) => (
+              <li key={b.id} className="surface-panel rounded-2xl p-5">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-extrabold">
+                      {b.trip ? `${b.trip.from_city} → ${b.trip.to_city}` : "Trajet supprimé"}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold text-muted-foreground tabular-nums">
+                      {b.counterpart?.first_name ?? "Passager"}{" "}
+                      {b.counterpart?.last_name?.charAt(0) ?? ""} · {b.seats} place(s) ·{" "}
+                      {money(Number(b.total_price))}
+                    </p>
+                    {b.message ? (
+                      <p className="mt-1 text-xs text-muted-foreground">« {b.message} »</p>
+                    ) : null}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold">
+                      {BOOKING_STATUS_LABEL[b.status] ?? b.status}
+                    </span>
+                    {b.status === "pending" && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => decide.mutate({ id: b.id, status: "accepted" })}
+                          disabled={decide.isPending}
+                          className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-60"
+                        >
+                          Accepter
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => decide.mutate({ id: b.id, status: "rejected" })}
+                          disabled={decide.isPending}
+                          className="rounded-full border border-border px-4 py-1.5 text-xs font-semibold hover:border-destructive/40 hover:text-destructive disabled:opacity-60"
+                        >
+                          Refuser
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
       <SiteFooter />
     </div>
