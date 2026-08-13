@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { ArrowRight, Clock, Star, ShieldCheck, Zap, Users } from "lucide-react";
 import type { Ride } from "@/lib/rides";
 import { useI18n } from "@/lib/i18n";
+import { BookingDialog } from "./BookingDialog";
 
 export function RideCard({ ride }: { ride: Ride }) {
   const { t, city, money } = useI18n();
+  const [open, setOpen] = useState(false);
 
   return (
     <article className="group surface-panel rounded-2xl p-5 transition-all hover:-translate-y-1 hover:shadow-lift">
