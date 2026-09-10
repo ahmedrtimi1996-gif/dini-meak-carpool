@@ -10,10 +10,13 @@ import { messageErrorMessage, openConversation } from "@/lib/messaging";
  */
 export function MessageDriverButton({
   tripId,
+  passengerId,
   className,
   label = "Contacter le conducteur",
 }: {
   tripId: string;
+  /** Set when the driver contacts a specific passenger. */
+  passengerId?: string;
   className?: string;
   label?: string;
 }) {
@@ -45,7 +48,7 @@ export function MessageDriverButton({
           setBusy(true);
           setError(null);
           try {
-            const conv = await openConversation(tripId);
+            const conv = await openConversation(tripId, passengerId);
             await navigate({ to: "/messages", search: { c: conv.id } });
           } catch (e) {
             setError(messageErrorMessage(e));
