@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BookingsRouteImport } from './routes/bookings'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as PublishRouteImport } from './routes/publish'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as VehiclesRouteImport } from './routes/vehicles'
@@ -53,6 +54,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PublishRoute = PublishRouteImport.update({
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/bookings': typeof BookingsRoute
   '/dashboard': typeof DashboardRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/messages': typeof MessagesRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
   '/vehicles': typeof VehiclesRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/bookings': typeof BookingsRoute
   '/dashboard': typeof DashboardRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/messages': typeof MessagesRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
   '/vehicles': typeof VehiclesRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/bookings': typeof BookingsRoute
   '/dashboard': typeof DashboardRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/messages': typeof MessagesRoute
   '/publish': typeof PublishRoute
   '/search': typeof SearchRoute
   '/vehicles': typeof VehiclesRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/bookings'
     | '/dashboard'
     | '/how-it-works'
+    | '/messages'
     | '/publish'
     | '/search'
     | '/vehicles'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/bookings'
     | '/dashboard'
     | '/how-it-works'
+    | '/messages'
     | '/publish'
     | '/search'
     | '/vehicles'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/bookings'
     | '/dashboard'
     | '/how-it-works'
+    | '/messages'
     | '/publish'
     | '/search'
     | '/vehicles'
@@ -212,6 +224,7 @@ export interface RootRouteChildren {
   BookingsRoute: typeof BookingsRoute
   DashboardRoute: typeof DashboardRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  MessagesRoute: typeof MessagesRoute
   PublishRoute: typeof PublishRoute
   SearchRoute: typeof SearchRoute
   VehiclesRoute: typeof VehiclesRoute
@@ -261,6 +274,13 @@ declare module '@tanstack/react-router' {
       path: '/how-it-works'
       fullPath: '/how-it-works'
       preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/publish': {
@@ -352,6 +372,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookingsRoute: BookingsRoute,
   DashboardRoute: DashboardRoute,
   HowItWorksRoute: HowItWorksRoute,
+  MessagesRoute: MessagesRoute,
   PublishRoute: PublishRoute,
   SearchRoute: SearchRoute,
   VehiclesRoute: VehiclesRoute,
