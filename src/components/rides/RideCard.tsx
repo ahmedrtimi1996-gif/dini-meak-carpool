@@ -2,11 +2,15 @@ import { useState } from "react";
 import { ArrowRight, Clock, Star, ShieldCheck, Zap, Users } from "lucide-react";
 import type { Ride } from "@/lib/rides";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/hooks/useAuth";
 import { BookingDialog } from "./BookingDialog";
+import { MessageDriverButton } from "./MessageDriverButton";
 
 export function RideCard({ ride }: { ride: Ride }) {
   const { t, city, money } = useI18n();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
+  const isOwnRide = Boolean(ride.driverId && user?.id === ride.driverId);
 
   return (
     <article className="group surface-panel rounded-2xl p-5 transition-all hover:-translate-y-1 hover:shadow-lift">
