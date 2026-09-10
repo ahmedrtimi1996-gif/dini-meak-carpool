@@ -229,7 +229,7 @@ function MessagesPage() {
                 <header className="flex items-center gap-3 border-b border-border p-4">
                   <button
                     type="button"
-                    onClick={() => void navigate({ search: {} })}
+                    onClick={() => void navigate({ search: { c: undefined } })}
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border lg:hidden"
                     aria-label="Retour aux conversations"
                   >
