@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Car, Loader2, Pause, Play, Plus, ShieldCheck, Users } from "lucide-react";
 import { useEffect } from "react";
 import { SiteHeader } from "@/components/brand/SiteHeader";
+import { MessageDriverButton } from "@/components/rides/MessageDriverButton";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
@@ -218,10 +219,18 @@ function DashboardPage() {
                       <p className="mt-1 text-xs text-muted-foreground">« {b.message} »</p>
                     ) : null}
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
                     <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold">
                       {BOOKING_STATUS_LABEL[b.status] ?? b.status}
                     </span>
+                    {b.trip && (
+                      <MessageDriverButton
+                        tripId={b.trip.id}
+                        passengerId={b.passenger_id}
+                        label="Message"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-1.5 text-xs font-bold hover:border-primary/40 hover:text-primary"
+                      />
+                    )}
                     {b.status === "pending" && (
                       <>
                         <button

@@ -1,5 +1,7 @@
 export type Ride = {
   id: string;
+  /** Driver profile id — present for database-backed rides. */
+  driverId?: string;
   from: string;
   to: string;
   /** ISO date, YYYY-MM-DD */

@@ -1,10 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X, Plus, UserRound, LayoutDashboard, ShieldCheck, LogOut, Ticket } from "lucide-react";
+import { Menu, X, Plus, UserRound, LayoutDashboard, ShieldCheck, LogOut, Ticket, MessageSquare } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { NotificationBell } from "./NotificationBell";
+import { unreadMessageCount } from "@/lib/messaging";
 
 export function SiteHeader() {
   const { t } = useI18n();
@@ -21,6 +24,13 @@ export function SiteHeader() {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [menuOpen]);
+
+  const { data: unreadMessages = 0 } = useQuery({
+    queryKey: ["unread-messages", user?.id],
+    queryFn: () => unreadMessageCount(user?.id as string),
+    enabled: Boolean(user?.id),
+    refetchInterval: 60_000,
+  });
 
   const links = [
     { to: "/search" as const, label: t("nav.search") },
@@ -52,6 +62,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
+          {user && <NotificationBell />}
 
           {user ? (
             <div className="relative" ref={menuRef}>
@@ -84,6 +95,19 @@ export function SiteHeader() {
                   >
                     <UserRound className="h-4 w-4" aria-hidden="true" />
                     Mon profil
+                  </Link>
+                  <Link
+                    to="/messages"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-muted"
+                  >
+                    <MessageSquare className="h-4 w-4" aria-hidden="true" />
+                    Messages
+                    {unreadMessages > 0 && (
+                      <span className="ms-auto grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-extrabold text-primary-foreground">
+                        {unreadMessages > 9 ? "9+" : unreadMessages}
+                      </span>
+                    )}
                   </Link>
                   <Link
                     to="/bookings"
@@ -170,6 +194,20 @@ export function SiteHeader() {
                 className="block rounded-lg px-3 py-3 text-sm font-semibold text-foreground/80 hover:bg-muted"
               >
                 Mon profil
+              </Link>
+              <Link
+                to="/messages"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-3 text-sm font-semibold text-foreground/80 hover:bg-muted"
+              >
+                Messages{unreadMessages > 0 ? ` (${unreadMessages})` : ""}
+              </Link>
+              <Link
+                to="/bookings"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-3 text-sm font-semibold text-foreground/80 hover:bg-muted"
+              >
+                Mes réservations
               </Link>
               <Link
                 to="/dashboard"
