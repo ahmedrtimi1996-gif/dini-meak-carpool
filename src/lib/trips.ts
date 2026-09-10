@@ -80,6 +80,7 @@ export function commissionFor(total: number) {
 export function tripToRide(trip: TripWithDriver): Ride {
   return {
     id: trip.id,
+    driverId: trip.driver_id,
     from: trip.from_city,
     to: trip.to_city,
     date: trip.depart_date,
