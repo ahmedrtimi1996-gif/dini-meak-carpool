@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Car, Loader2, Pause, Play, Plus, ShieldCheck, Users } from "lucide-react";
 import { useEffect } from "react";
 import { SiteHeader } from "@/components/brand/SiteHeader";
+import { MessageDriverButton } from "@/components/rides/MessageDriverButton";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
