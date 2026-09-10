@@ -162,6 +162,7 @@ export type Database = {
           last_message_at: string
           passenger_id: string
           trip_id: string | null
+          updated_at: string
         }
         Insert: {
           created_at?: string
@@ -170,6 +171,7 @@ export type Database = {
           last_message_at?: string
           passenger_id: string
           trip_id?: string | null
+          updated_at?: string
         }
         Update: {
           created_at?: string
@@ -178,6 +180,7 @@ export type Database = {
           last_message_at?: string
           passenger_id?: string
           trip_id?: string | null
+          updated_at?: string
         }
         Relationships: [
           {
@@ -1235,12 +1238,48 @@ export type Database = {
         }
       }
       driver_publish_requirements: { Args: { _user_id: string }; Returns: Json }
+      get_or_create_conversation: {
+        Args: { _passenger_id?: string; _trip_id: string }
+        Returns: {
+          created_at: string
+          driver_id: string
+          id: string
+          last_message_at: string
+          passenger_id: string
+          trip_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "conversations"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      send_message: {
+        Args: { _body: string; _conversation_id: string }
+        Returns: {
+          attachment_url: string | null
+          body: string | null
+          conversation_id: string
+          created_at: string
+          id: string
+          read_at: string | null
+          sender_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "messages"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       vehicle_verification_statuses: {
         Args: { _owner_id: string }
