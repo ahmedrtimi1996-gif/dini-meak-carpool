@@ -77,15 +77,24 @@ export function RideCard({ ride }: { ride: Ride }) {
             <Users className="h-3.5 w-3.5" />
             {ride.seats} {ride.seats === 1 ? t("trips.seatLeft") : t("trips.seatsLeft")}
           </span>
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            disabled={ride.seats < 1}
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-50"
-          >
-            {t("trips.book")}
-            <ArrowRight className="h-4 w-4 rtl:rotate-180" />
-          </button>
+          {ride.driverId && !isOwnRide && (
+            <MessageDriverButton tripId={ride.id} label="Contacter" />
+          )}
+          {isOwnRide ? (
+            <span className="rounded-full bg-muted px-4 py-2 text-sm font-bold text-muted-foreground">
+              Votre trajet
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              disabled={ride.seats < 1}
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+            >
+              {t("trips.book")}
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+            </button>
+          )}
         </div>
       </div>
 
