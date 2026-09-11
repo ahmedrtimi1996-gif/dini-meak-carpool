@@ -128,8 +128,10 @@ async function hydrate(rows: TripRow[]): Promise<TripWithDriver[]> {
       : Promise.resolve({ data: [] as never[] }),
   ]);
 
-  const pMap = new Map((profiles ?? []).map((p) => [p.id, p as ProfileLite]));
-  const vMap = new Map((vehicles ?? []).map((v) => [v.id, v]));
+  const pMap = new Map((profiles ?? []).map((p) => [p.id as string, p as ProfileLite]));
+  const vMap = new Map(
+    (vehicles ?? []).map((v) => [v.id as string, v as TripWithDriver["vehicle"]]),
+  );
 
   return rows.map((r) => ({
     ...r,
