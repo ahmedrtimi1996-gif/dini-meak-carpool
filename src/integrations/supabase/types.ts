@@ -1315,58 +1315,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      safe_public_profiles: {
-        Args: never
-        Returns: {
-          account_status: Database["public"]["Enums"]["account_status"]
-          avatar_url: string
-          bio: string
-          cancelled_trips: number
-          city: string
-          completed_trips: number
-          cover_url: string
-          created_at: string
-          driving_experience_years: number
-          email_verified: boolean
-          first_name: string
-          id: string
-          identity_verified: boolean
-          insurance_verified: boolean
-          is_featured: boolean
-          languages: string[]
-          last_name: string
-          license_verified: boolean
-          phone_verified: boolean
-          rating: number
-          reviews_count: number
-          vehicle_verified: boolean
-        }[]
-      }
-      safe_public_vehicles: {
-        Args: never
-        Returns: {
-          air_conditioning: boolean
-          brand: string
-          color: string
-          created_at: string
-          fuel: string
-          id: string
-          is_default: boolean
-          luggage: string
-          model: string
-          music: boolean
-          owner_id: string
-          pets_allowed: boolean
-          photos: string[]
-          seats: number
-          smoking_allowed: boolean
-          transmission: string
-          usb_charger: boolean
-          version: string
-          wifi: boolean
-          year: number
-        }[]
-      }
       send_message: {
         Args: { _body: string; _conversation_id: string }
         Returns: {
