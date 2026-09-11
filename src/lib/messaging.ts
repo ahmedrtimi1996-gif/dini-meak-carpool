@@ -97,7 +97,7 @@ export async function listConversations(userId: string): Promise<ConversationVie
   const convIds = rows.map((r) => r.id);
 
   const [{ data: people }, { data: trips }, { data: msgs }] = await Promise.all([
-    supabase.from("profiles").select("id, first_name, last_name, avatar_url, rating").in("id", otherIds),
+    supabase.from("profiles_public").select("id, first_name, last_name, avatar_url, rating").in("id", otherIds),
     tripIds.length
       ? supabase
           .from("trips")
