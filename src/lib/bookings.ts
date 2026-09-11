@@ -102,7 +102,9 @@ async function hydrate(rows: BookingRow[], side: "passenger" | "driver"): Promis
   ]);
 
   const tMap = new Map((trips ?? []).map((t) => [t.id, t]));
-  const pMap = new Map((people ?? []).map((p) => [p.id, p]));
+  const pMap = new Map(
+    (people ?? []).map((p) => [p.id as string, p as BookingWithTrip["counterpart"]]),
+  );
 
   return rows.map((r) => ({
     ...r,
