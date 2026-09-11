@@ -676,11 +676,16 @@ export type Database = {
           created_at: string
           driving: number | null
           friendliness: number | null
+          hidden_by: string | null
+          hidden_reason: string | null
           id: string
+          is_hidden: boolean
           overall: number
           punctuality: number | null
           safety: number | null
           target_id: string
+          trip_id: string | null
+          updated_at: string
         }
         Insert: {
           author_id: string
@@ -691,11 +696,16 @@ export type Database = {
           created_at?: string
           driving?: number | null
           friendliness?: number | null
+          hidden_by?: string | null
+          hidden_reason?: string | null
           id?: string
+          is_hidden?: boolean
           overall: number
           punctuality?: number | null
           safety?: number | null
           target_id: string
+          trip_id?: string | null
+          updated_at?: string
         }
         Update: {
           author_id?: string
@@ -706,11 +716,16 @@ export type Database = {
           created_at?: string
           driving?: number | null
           friendliness?: number | null
+          hidden_by?: string | null
+          hidden_reason?: string | null
           id?: string
+          is_hidden?: boolean
           overall?: number
           punctuality?: number | null
           safety?: number | null
           target_id?: string
+          trip_id?: string | null
+          updated_at?: string
         }
         Relationships: [
           {
@@ -718,6 +733,13 @@ export type Database = {
             columns: ["booking_id"]
             isOneToOne: false
             referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
             referencedColumns: ["id"]
           },
         ]
