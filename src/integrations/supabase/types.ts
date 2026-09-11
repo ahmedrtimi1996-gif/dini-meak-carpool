@@ -300,13 +300,6 @@ export type Database = {
             referencedRelation: "vehicles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "driver_documents_vehicle_id_fkey"
-            columns: ["vehicle_id"]
-            isOneToOne: false
-            referencedRelation: "vehicles_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       favorite_drivers: {
@@ -1015,13 +1008,6 @@ export type Database = {
             referencedRelation: "vehicles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "trips_vehicle_id_fkey"
-            columns: ["vehicle_id"]
-            isOneToOne: false
-            referencedRelation: "vehicles_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       user_roles: {
@@ -1237,54 +1223,6 @@ export type Database = {
           reviews_count: number | null
           vehicle_verified: boolean | null
         }
-        Insert: {
-          account_status?: Database["public"]["Enums"]["account_status"] | null
-          avatar_url?: string | null
-          bio?: string | null
-          cancelled_trips?: number | null
-          city?: string | null
-          completed_trips?: number | null
-          cover_url?: string | null
-          created_at?: string | null
-          driving_experience_years?: number | null
-          email_verified?: boolean | null
-          first_name?: string | null
-          id?: string | null
-          identity_verified?: boolean | null
-          insurance_verified?: boolean | null
-          is_featured?: boolean | null
-          languages?: string[] | null
-          last_name?: string | null
-          license_verified?: boolean | null
-          phone_verified?: boolean | null
-          rating?: number | null
-          reviews_count?: number | null
-          vehicle_verified?: boolean | null
-        }
-        Update: {
-          account_status?: Database["public"]["Enums"]["account_status"] | null
-          avatar_url?: string | null
-          bio?: string | null
-          cancelled_trips?: number | null
-          city?: string | null
-          completed_trips?: number | null
-          cover_url?: string | null
-          created_at?: string | null
-          driving_experience_years?: number | null
-          email_verified?: boolean | null
-          first_name?: string | null
-          id?: string | null
-          identity_verified?: boolean | null
-          insurance_verified?: boolean | null
-          is_featured?: boolean | null
-          languages?: string[] | null
-          last_name?: string | null
-          license_verified?: boolean | null
-          phone_verified?: boolean | null
-          rating?: number | null
-          reviews_count?: number | null
-          vehicle_verified?: boolean | null
-        }
         Relationships: []
       }
       vehicles_public: {
@@ -1309,50 +1247,6 @@ export type Database = {
           version: string | null
           wifi: boolean | null
           year: number | null
-        }
-        Insert: {
-          air_conditioning?: boolean | null
-          brand?: string | null
-          color?: string | null
-          created_at?: string | null
-          fuel?: string | null
-          id?: string | null
-          is_default?: boolean | null
-          luggage?: string | null
-          model?: string | null
-          music?: boolean | null
-          owner_id?: string | null
-          pets_allowed?: boolean | null
-          photos?: string[] | null
-          seats?: number | null
-          smoking_allowed?: boolean | null
-          transmission?: string | null
-          usb_charger?: boolean | null
-          version?: string | null
-          wifi?: boolean | null
-          year?: number | null
-        }
-        Update: {
-          air_conditioning?: boolean | null
-          brand?: string | null
-          color?: string | null
-          created_at?: string | null
-          fuel?: string | null
-          id?: string | null
-          is_default?: boolean | null
-          luggage?: string | null
-          model?: string | null
-          music?: boolean | null
-          owner_id?: string | null
-          pets_allowed?: boolean | null
-          photos?: string[] | null
-          seats?: number | null
-          smoking_allowed?: boolean | null
-          transmission?: string | null
-          usb_charger?: boolean | null
-          version?: string | null
-          wifi?: boolean | null
-          year?: number | null
         }
         Relationships: []
       }
@@ -1420,6 +1314,58 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      safe_public_profiles: {
+        Args: never
+        Returns: {
+          account_status: Database["public"]["Enums"]["account_status"]
+          avatar_url: string
+          bio: string
+          cancelled_trips: number
+          city: string
+          completed_trips: number
+          cover_url: string
+          created_at: string
+          driving_experience_years: number
+          email_verified: boolean
+          first_name: string
+          id: string
+          identity_verified: boolean
+          insurance_verified: boolean
+          is_featured: boolean
+          languages: string[]
+          last_name: string
+          license_verified: boolean
+          phone_verified: boolean
+          rating: number
+          reviews_count: number
+          vehicle_verified: boolean
+        }[]
+      }
+      safe_public_vehicles: {
+        Args: never
+        Returns: {
+          air_conditioning: boolean
+          brand: string
+          color: string
+          created_at: string
+          fuel: string
+          id: string
+          is_default: boolean
+          luggage: string
+          model: string
+          music: boolean
+          owner_id: string
+          pets_allowed: boolean
+          photos: string[]
+          seats: number
+          smoking_allowed: boolean
+          transmission: string
+          usb_charger: boolean
+          version: string
+          wifi: boolean
+          year: number
+        }[]
       }
       send_message: {
         Args: { _body: string; _conversation_id: string }
