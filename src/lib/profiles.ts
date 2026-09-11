@@ -29,7 +29,7 @@ const PUBLIC_COLUMNS =
 /** Public profile: private fields (phone, address, documents) are never selected. */
 export async function getPublicProfile(id: string): Promise<PublicProfile | null> {
   const { data, error } = await supabase
-    .from("profiles")
+    .from("profiles_public")
     .select(PUBLIC_COLUMNS)
     .eq("id", id)
     .maybeSingle();
@@ -133,7 +133,7 @@ export async function profileReviews(targetId: string) {
   const reviews = (data ?? []) as ReviewRow[];
   if (reviews.length === 0) return { reviews, authors: new Map<string, PublicProfile>() };
   const { data: authors } = await supabase
-    .from("profiles")
+    .from("profiles_public")
     .select(PUBLIC_COLUMNS)
     .in("id", [...new Set(reviews.map((r) => r.author_id))]);
   return {

@@ -96,13 +96,15 @@ async function hydrate(rows: BookingRow[], side: "passenger" | "driver"): Promis
       .select("id, from_city, to_city, depart_date, depart_time, status")
       .in("id", tripIds),
     supabase
-      .from("profiles")
+      .from("profiles_public")
       .select("id, first_name, last_name, avatar_url, rating")
       .in("id", peopleIds),
   ]);
 
   const tMap = new Map((trips ?? []).map((t) => [t.id, t]));
-  const pMap = new Map((people ?? []).map((p) => [p.id, p]));
+  const pMap = new Map(
+    (people ?? []).map((p) => [p.id as string, p as BookingWithTrip["counterpart"]]),
+  );
 
   return rows.map((r) => ({
     ...r,

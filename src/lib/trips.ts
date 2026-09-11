@@ -115,21 +115,23 @@ async function hydrate(rows: TripRow[]): Promise<TripWithDriver[]> {
 
   const [{ data: profiles }, { data: vehicles }] = await Promise.all([
     supabase
-      .from("profiles")
+      .from("profiles_public")
       .select(
         "id, first_name, last_name, avatar_url, rating, reviews_count, completed_trips, identity_verified, phone_verified",
       )
       .in("id", driverIds),
     vehicleIds.length
       ? supabase
-          .from("vehicles")
+          .from("vehicles_public")
           .select("id, brand, model, color, year, air_conditioning")
           .in("id", vehicleIds)
       : Promise.resolve({ data: [] as never[] }),
   ]);
 
-  const pMap = new Map((profiles ?? []).map((p) => [p.id, p as ProfileLite]));
-  const vMap = new Map((vehicles ?? []).map((v) => [v.id, v]));
+  const pMap = new Map((profiles ?? []).map((p) => [p.id as string, p as ProfileLite]));
+  const vMap = new Map(
+    (vehicles ?? []).map((v) => [v.id as string, v as TripWithDriver["vehicle"]]),
+  );
 
   return rows.map((r) => ({
     ...r,

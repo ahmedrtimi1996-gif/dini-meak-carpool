@@ -97,7 +97,10 @@ export async function listConversations(userId: string): Promise<ConversationVie
   const convIds = rows.map((r) => r.id);
 
   const [{ data: people }, { data: trips }, { data: msgs }] = await Promise.all([
-    supabase.from("profiles").select("id, first_name, last_name, avatar_url, rating").in("id", otherIds),
+    supabase
+      .from("profiles_public")
+      .select("id, first_name, last_name, avatar_url, rating")
+      .in("id", otherIds),
     tripIds.length
       ? supabase
           .from("trips")
@@ -112,7 +115,9 @@ export async function listConversations(userId: string): Promise<ConversationVie
       .limit(500),
   ]);
 
-  const pMap = new Map((people ?? []).map((p) => [p.id, p]));
+  const pMap = new Map(
+    (people ?? []).map((p) => [p.id as string, p as ConversationView["other"]]),
+  );
   const tMap = new Map((trips ?? []).map((t) => [t.id, t]));
   const last = new Map<string, string | null>();
   const unread = new Map<string, number>();
