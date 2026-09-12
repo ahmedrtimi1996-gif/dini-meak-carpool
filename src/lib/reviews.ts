@@ -30,7 +30,7 @@ const REVIEW_ERRORS: Record<string, string> = {
   SELF_REVIEW: "Vous ne pouvez pas vous évaluer vous-même.",
   BOOKING_NOT_FOUND: "Cette réservation n'existe plus.",
   reviews_unique_author_booking_target: "Vous avez déjà évalué cette personne pour ce trajet.",
-  duplicate key: "Vous avez déjà évalué cette personne pour ce trajet.",
+  "duplicate key": "Vous avez déjà évalué cette personne pour ce trajet.",
   reviews_overall_range: "La note doit être comprise entre 1 et 5 étoiles.",
   REVIEW_IMMUTABLE: "Un avis publié ne peut pas être modifié.",
 };
