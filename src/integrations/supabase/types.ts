@@ -1337,6 +1337,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_published_avatar: { Args: { _name: string }; Returns: boolean }
       send_message: {
         Args: { _body: string; _conversation_id: string }
         Returns: {
