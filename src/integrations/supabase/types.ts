@@ -1355,6 +1355,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      trip_vehicle_is_verified: {
+        Args: { _driver_id: string; _vehicle_id: string }
+        Returns: boolean
+      }
       vehicle_verification_statuses: {
         Args: { _owner_id: string }
         Returns: Json
