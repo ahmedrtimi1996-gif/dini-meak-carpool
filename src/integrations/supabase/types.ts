@@ -1337,6 +1337,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_published_avatar: { Args: { _name: string }; Returns: boolean }
       send_message: {
         Args: { _body: string; _conversation_id: string }
         Returns: {
@@ -1354,6 +1355,10 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      trip_vehicle_is_verified: {
+        Args: { _driver_id: string; _vehicle_id: string }
+        Returns: boolean
       }
       vehicle_verification_statuses: {
         Args: { _owner_id: string }
