@@ -2,12 +2,15 @@ import { useState } from "react";
 import { ArrowRight, Clock, Star, ShieldCheck, Zap, Users } from "lucide-react";
 import type { Ride } from "@/lib/rides";
 import { useI18n } from "@/lib/i18n";
+import { longDate, humanDuration } from "@/lib/datetime";
 import { useAuth } from "@/hooks/useAuth";
 import { BookingDialog } from "./BookingDialog";
 import { MessageDriverButton } from "./MessageDriverButton";
 
 export function RideCard({ ride }: { ride: Ride }) {
-  const { t, city, money } = useI18n();
+  const { t, city, money, lang } = useI18n();
+  const dur = humanDuration(ride.durationMinutes) ?? (ride.duration !== "—" ? ride.duration : null);
+  const arrDate = ride.arriveDate ?? null;
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const isOwnRide = Boolean(ride.driverId && user?.id === ride.driverId);
@@ -21,21 +24,34 @@ export function RideCard({ ride }: { ride: Ride }) {
             <span className="my-1 h-10 w-px bg-gradient-to-b from-primary to-accent" />
             <span className="h-2.5 w-2.5 rounded-full bg-accent" />
           </div>
-          <div className="min-w-0">
-            <div className="flex items-baseline gap-2">
-              <span className="text-sm font-bold tabular-nums text-muted-foreground">
-                {ride.time}
-              </span>
+          <div className="min-w-0 space-y-1">
+            <div>
               <h3 className="truncate text-base font-bold">{city(ride.from)}</h3>
+              <p className="text-xs text-muted-foreground">
+                Départ : {longDate(ride.date, lang)},{" "}
+                <span className="font-bold tabular-nums text-foreground">{ride.time}</span>
+              </p>
             </div>
-            <p className="my-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+            <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Clock className="h-3.5 w-3.5" />
-              {ride.duration}
+              {dur ? `Durée : ${dur}` : "Durée non communiquée"}
             </p>
-            <div className="flex items-baseline gap-2">
+            <div>
               <h3 className="truncate text-base font-bold">{city(ride.to)}</h3>
+              <p className="text-xs text-muted-foreground">
+                {ride.arriveTime && arrDate ? (
+                  <>
+                    Arrivée estimée : {longDate(arrDate, lang)},{" "}
+                    <span className="font-bold tabular-nums text-foreground">{ride.arriveTime}</span>
+                    {arrDate !== ride.date ? (
+                      <span className="ms-1 rounded bg-amber-soft px-1 font-bold text-amber-foreground">+1 j</span>
+                    ) : null}
+                  </>
+                ) : (
+                  "Arrivée estimée non communiquée"
+                )}
+              </p>
             </div>
-
           </div>
         </div>
 
