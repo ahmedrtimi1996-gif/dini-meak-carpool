@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Ride } from "./rides";
+import { todayMA, nowTimeMA } from "./datetime";
 
 export const PLATFORM_COMMISSION_RATE = 0.08;
 
@@ -15,6 +16,7 @@ export type TripRow = {
   depart_date: string;
   depart_time: string;
   arrive_time: string | null;
+  arrive_date: string | null;
   duration_minutes: number | null;
   distance_km: number | null;
   seats_total: number;
@@ -86,6 +88,9 @@ export function tripToRide(trip: TripWithDriver): Ride {
     date: trip.depart_date,
     time: trip.depart_time.slice(0, 5),
     duration: formatDuration(trip.duration_minutes),
+    arriveDate: trip.arrive_date,
+    arriveTime: trip.arrive_time ? trip.arrive_time.slice(0, 5) : null,
+    durationMinutes: trip.duration_minutes,
     price: Number(trip.price),
     seats: trip.seats_available,
     driver: displayName(trip.driver),
@@ -153,11 +158,13 @@ export type TripFilters = {
 };
 
 export async function searchTrips(filters: TripFilters): Promise<TripWithDriver[]> {
+  const today = todayMA();
   let query = supabase
     .from("trips")
     .select("*")
     .eq("status", "published")
-    .gte("depart_date", filters.date ?? new Date().toISOString().slice(0, 10))
+    .gt("seats_available", 0)
+    .gte("depart_date", filters.date && filters.date > today ? filters.date : today)
     .order("depart_date", { ascending: true })
     .order("depart_time", { ascending: true })
     .limit(60);
@@ -174,7 +181,12 @@ export async function searchTrips(filters: TripFilters): Promise<TripWithDriver[
 
   const { data, error } = await query;
   if (error) throw error;
-  return hydrate((data ?? []) as TripRow[]);
+  // Hide rides that already left today (Morocco local time).
+  const now = nowTimeMA();
+  const rows = ((data ?? []) as TripRow[]).filter(
+    (r) => r.depart_date > today || r.depart_time.slice(0, 5) >= now,
+  );
+  return hydrate(rows);
 }
 
 export async function getTrip(id: string): Promise<TripWithDriver | null> {
@@ -206,6 +218,7 @@ export type NewTripInput = {
   depart_date: string;
   depart_time: string;
   arrive_time?: string | null;
+  arrive_date?: string | null;
   seats_total: number;
   price: number;
   vehicle_id?: string | null;
@@ -247,6 +260,7 @@ export async function createTrip(input: NewTripInput): Promise<TripRow> {
         ? `${input.arrive_time}:00`
         : input.arrive_time
       : null,
+    arrive_date: input.arrive_time ? input.arrive_date || null : null,
     duration_minutes: input.duration_minutes ?? null,
     distance_km: input.distance_km ?? null,
     seats_total: input.seats_total,

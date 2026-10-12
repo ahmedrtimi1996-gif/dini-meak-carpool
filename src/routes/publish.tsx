@@ -12,6 +12,7 @@ import { canPublish, fetchPublishRequirements, fetchVehicleStatuses } from "@/li
 import { myVehicles } from "@/lib/profiles";
 import { commissionFor } from "@/lib/trips";
 import { createTrip } from "@/lib/trips";
+import { todayMA, nowTimeMA, addDaysISO, minutesBetween, humanDuration } from "@/lib/datetime";
 
 export const Route = createFileRoute("/publish")({
   ssr: false,
@@ -41,6 +42,7 @@ type Draft = {
   date: string;
   time: string;
   arriveTime: string;
+  arriveDate: string;
   price: string;
   seats: number;
   vehicleId: string;
@@ -60,6 +62,7 @@ const empty: Draft = {
   date: "",
   time: "",
   arriveTime: "",
+  arriveDate: "",
   price: "",
   seats: 2,
   vehicleId: "",
@@ -104,13 +107,22 @@ function PublishPage() {
 
 
   const publish = useMutation({
-    mutationFn: async (d: Draft) =>
-      createTrip({
+    mutationFn: async (d: Draft) => {
+      const today = todayMA();
+      if (d.date < today || (d.date === today && d.time < nowTimeMA()))
+        throw new Error("La date et l'heure de départ doivent être dans le futur (heure du Maroc).");
+      if (d.arriveTime) {
+        const mins = minutesBetween(d.date, d.time, d.arriveDate || d.date, d.arriveTime);
+        if (mins <= 0) throw new Error("L'arrivée estimée doit être après le départ. Si vous arrivez après minuit, choisissez le lendemain comme date d'arrivée.");
+        if (mins > 48 * 60) throw new Error("L'arrivée estimée ne peut pas dépasser 48 h après le départ.");
+      }
+      return createTrip({
         from_city: d.from,
         to_city: d.to,
         depart_date: d.date,
         depart_time: d.time,
         arrive_time: d.arriveTime || null,
+        arrive_date: d.arriveTime ? d.arriveDate || d.date : null,
         seats_total: d.seats,
         price: Number(d.price),
         vehicle_id: d.vehicleId || null,
@@ -122,7 +134,8 @@ function PublishPage() {
         pets_allowed: d.pets,
         smoking_allowed: d.smoking,
         luggage: d.luggage,
-      }),
+      });
+    },
     onError: (e: Error) => setError(e.message),
   });
 
@@ -310,7 +323,7 @@ function PublishPage() {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-4">
+              <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
                 <div>
                   <label className={label} htmlFor="date">
                     {t("publish.when")}
@@ -319,10 +332,19 @@ function PublishPage() {
                     id="date"
                     type="date"
                     required
-                    min={new Date().toISOString().slice(0, 10)}
+                    min={todayMA()}
                     className={input}
                     value={draft.date}
-                    onChange={(e) => setDraft({ ...draft, date: e.target.value })}
+                    onChange={(e) =>
+                      setDraft({
+                        ...draft,
+                        date: e.target.value,
+                        arriveDate:
+                          !draft.arriveDate || draft.arriveDate < e.target.value
+                            ? e.target.value
+                            : draft.arriveDate,
+                      })
+                    }
                   />
                 </div>
                 <div>
@@ -351,6 +373,35 @@ function PublishPage() {
                     value={draft.arriveTime}
                     onChange={(e) => setDraft({ ...draft, arriveTime: e.target.value })}
                   />
+                </div>
+                <div>
+                  <label className={label} htmlFor="arriveDate">
+                    Date d'arrivée
+                  </label>
+                  <select
+                    id="arriveDate"
+                    className={input}
+                    disabled={!draft.date}
+                    value={draft.arriveDate || draft.date}
+                    onChange={(e) => setDraft({ ...draft, arriveDate: e.target.value })}
+                  >
+                    {draft.date ? (
+                      <>
+                        <option value={draft.date}>Même jour</option>
+                        <option value={addDaysISO(draft.date, 1)}>Lendemain (+1 j)</option>
+                      </>
+                    ) : (
+                      <option value="">—</option>
+                    )}
+                  </select>
+                  {draft.date && draft.time && draft.arriveTime ? (
+                    <p className="mt-1 text-xs font-semibold text-muted-foreground">
+                      {(() => {
+                        const m = minutesBetween(draft.date, draft.time, draft.arriveDate || draft.date, draft.arriveTime);
+                        return m > 0 ? `Durée : ${humanDuration(m)}` : "Arrivée avant le départ";
+                      })()}
+                    </p>
+                  ) : null}
                 </div>
                 <div>
                   <label className={label} htmlFor="seats">
