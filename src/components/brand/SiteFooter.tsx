@@ -12,7 +12,7 @@ export function SiteFooter() {
           <div className="flex items-center gap-2.5">
             <LogoMark className="h-9 w-9" />
             <span className="text-lg font-extrabold tracking-tight">
-              Dini<span className="text-primary">M3ak</span>
+              TRE<span className="text-primary">QI</span>
             </span>
           </div>
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">{t("footer.tagline")}</p>
