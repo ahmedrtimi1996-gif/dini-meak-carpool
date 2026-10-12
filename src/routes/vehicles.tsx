@@ -13,14 +13,14 @@ export const Route = createFileRoute("/vehicles")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Mes véhicules — DiniM3ak" },
+      { title: "Mes véhicules — TREQI" },
       {
         name: "description",
         content:
-          "Ajoutez et gérez les véhicules que vous utilisez pour vos trajets DiniM3ak : marque, modèle, places et assurance.",
+          "Ajoutez et gérez les véhicules que vous utilisez pour vos trajets TREQI : marque, modèle, places et assurance.",
       },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Mes véhicules — DiniM3ak" },
+      { property: "og:title", content: "Mes véhicules — TREQI" },
       { property: "og:description", content: "Gérez les véhicules liés à votre compte conducteur." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

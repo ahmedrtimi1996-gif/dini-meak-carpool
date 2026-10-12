@@ -12,15 +12,15 @@ export const Route = createFileRoute("/bookings")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Mes réservations — DiniM3ak" },
+      { title: "Mes réservations — TREQI" },
       {
         name: "description",
         content:
-          "Suivez vos réservations de covoiturage DiniM3ak : statut, places réservées et montant en MAD.",
+          "Suivez vos réservations de covoiturage TREQI : statut, places réservées et montant en MAD.",
       },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Mes réservations — DiniM3ak" },
-      { property: "og:description", content: "Statut et détail de vos réservations DiniM3ak." },
+      { property: "og:title", content: "Mes réservations — TREQI" },
+      { property: "og:description", content: "Statut et détail de vos réservations TREQI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

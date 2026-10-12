@@ -29,17 +29,17 @@ export const Route = createFileRoute("/verification")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Centre de vérification — DiniM3ak" },
+      { title: "Centre de vérification — TREQI" },
       {
         name: "description",
         content:
-          "Suivez l'état de vos vérifications DiniM3ak : identité, permis, carte grise et assurance, et envoyez vos documents en toute sécurité.",
+          "Suivez l'état de vos vérifications TREQI : identité, permis, carte grise et assurance, et envoyez vos documents en toute sécurité.",
       },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Centre de vérification — DiniM3ak" },
+      { property: "og:title", content: "Centre de vérification — TREQI" },
       {
         property: "og:description",
-        content: "Envoyez vos documents et suivez leur validation par l'équipe DiniM3ak.",
+        content: "Envoyez vos documents et suivez leur validation par l'équipe TREQI.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -161,7 +161,7 @@ function VerificationPage() {
         </h1>
         <p className="mt-2 text-muted-foreground">
           Vos documents sont stockés dans un espace privé et chiffré. Ils sont visibles uniquement
-          par vous et par l'équipe de vérification DiniM3ak.
+          par vous et par l'équipe de vérification TREQI.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">

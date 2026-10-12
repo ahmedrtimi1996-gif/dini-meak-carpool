@@ -12,7 +12,7 @@ export const extraFr: Dict = {
   "nav.logout": "Se déconnecter",
   "nav.account": "Mon compte",
 
-  "auth.title": "Bienvenue sur DiniM3ak",
+  "auth.title": "Bienvenue sur TREQI",
   "auth.subtitle": "Connectez-vous pour réserver et publier des trajets.",
   "auth.signin": "Se connecter",
   "auth.signup": "Créer un compte",
@@ -131,7 +131,7 @@ export const extraEn: Dict = {
   "nav.logout": "Log out",
   "nav.account": "My account",
 
-  "auth.title": "Welcome to DiniM3ak",
+  "auth.title": "Welcome to TREQI",
   "auth.subtitle": "Sign in to book and publish rides.",
   "auth.signin": "Sign in",
   "auth.signup": "Create account",
@@ -250,7 +250,7 @@ export const extraAr: Dict = {
   "nav.logout": "تسجيل الخروج",
   "nav.account": "حسابي",
 
-  "auth.title": "مرحبا بك في DiniM3ak",
+  "auth.title": "مرحبا بك في TREQI",
   "auth.subtitle": "سجّل الدخول لحجز ونشر الرحلات.",
   "auth.signin": "تسجيل الدخول",
   "auth.signup": "إنشاء حساب",

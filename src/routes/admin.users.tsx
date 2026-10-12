@@ -140,7 +140,7 @@ function AdminUsersPage() {
             variant="outline"
             size="sm"
             disabled={!exportRows.length}
-            onClick={() => downloadCsv("dinim3ak-utilisateurs", exportRows)}
+            onClick={() => downloadCsv("treqi-utilisateurs", exportRows)}
           >
             <Download className="h-4 w-4" aria-hidden="true" />
             CSV

@@ -8,15 +8,15 @@ export const Route = createFileRoute("/admin")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Administration — DiniM3ak" },
+      { title: "Administration — TREQI" },
       {
         name: "description",
         content:
-          "Console d'administration DiniM3ak : pilotage des utilisateurs, trajets, paiements, modération et support.",
+          "Console d'administration TREQI : pilotage des utilisateurs, trajets, paiements, modération et support.",
       },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Administration — DiniM3ak" },
-      { property: "og:description", content: "Console interne de gestion de la plateforme DiniM3ak." },
+      { property: "og:title", content: "Administration — TREQI" },
+      { property: "og:description", content: "Console interne de gestion de la plateforme TREQI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -47,7 +47,7 @@ function AdminGate() {
         <ShieldOff className="h-10 w-10 text-destructive" aria-hidden="true" />
         <h1 className="text-2xl font-extrabold">Accès réservé</h1>
         <p className="text-sm text-muted-foreground">
-          Cette console est réservée aux administrateurs DiniM3ak. Si vous pensez qu'il s'agit d'une
+          Cette console est réservée aux administrateurs TREQI. Si vous pensez qu'il s'agit d'une
           erreur, contactez l'équipe plateforme.
         </p>
         <Button onClick={() => void navigate({ to: "/" })}>Retour à l'accueil</Button>

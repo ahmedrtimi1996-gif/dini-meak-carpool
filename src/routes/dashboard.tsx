@@ -16,14 +16,14 @@ export const Route = createFileRoute("/dashboard")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Mon espace conducteur — DiniM3ak" },
+      { title: "Mon espace conducteur — TREQI" },
       {
         name: "description",
         content:
-          "Gérez vos trajets DiniM3ak publiés, suivez vos demandes de réservation et l'état de votre vérification conducteur.",
+          "Gérez vos trajets TREQI publiés, suivez vos demandes de réservation et l'état de votre vérification conducteur.",
       },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Mon espace conducteur — DiniM3ak" },
+      { property: "og:title", content: "Mon espace conducteur — TREQI" },
       { property: "og:description", content: "Vos trajets, demandes et vérifications au même endroit." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

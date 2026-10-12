@@ -32,7 +32,7 @@ export function LogoMark({ className = "h-9 w-9" }: { className?: string }) {
 
 export function Logo({ compact = false }: { compact?: boolean }) {
   return (
-    <Link to="/" className="flex items-center gap-2.5" aria-label="DiniM3ak">
+    <Link to="/" className="flex items-center gap-2.5" aria-label="TREQI">
       <LogoMark className={compact ? "h-8 w-8" : "h-9 w-9"} />
       <span className="text-lg font-extrabold tracking-tight">
         Dini<span className="text-primary">M3ak</span>

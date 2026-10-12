@@ -1,14 +1,14 @@
-# DiniM3ak: Take Me With You
+# TREQI: Take Me With You
 
-Build a production-ready carpooling marketplace named "DiniM3ak".
+Build a production-ready carpooling marketplace named "TREQI".
 
 Brand Identity
 
-Name: DiniM3ak
+Name: TREQI
 
 Meaning:
 
-DiniM3ak means "Take me with you" in Moroccan Darija. The platform connects drivers with empty seats and passengers traveling in the same direction across Morocco.
+TREQI means "Take me with you" in Moroccan Darija. The platform connects drivers with empty seats and passengers traveling in the same direction across Morocco.
 
 Mission:
 
@@ -62,7 +62,7 @@ Modern, clean, premium.
 
 Logo concept:
 
-A modern location pin combined with a road and a car, including the text "DiniM3ak".
+A modern location pin combined with a road and a car, including the text "TREQI".
 
 Slogan:
 

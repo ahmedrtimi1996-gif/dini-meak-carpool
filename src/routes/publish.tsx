@@ -17,13 +17,13 @@ export const Route = createFileRoute("/publish")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Publier un trajet — DiniM3ak" },
+      { title: "Publier un trajet — TREQI" },
       {
         name: "description",
         content:
-          "Publiez votre trajet en une minute sur DiniM3ak : fixez votre prix par place en MAD et partagez les frais de route.",
+          "Publiez votre trajet en une minute sur TREQI : fixez votre prix par place en MAD et partagez les frais de route.",
       },
-      { property: "og:title", content: "Publier un trajet — DiniM3ak" },
+      { property: "og:title", content: "Publier un trajet — TREQI" },
       {
         property: "og:description",
         content: "Rentabilisez vos places vides : publication gratuite, vous validez chaque demande.",

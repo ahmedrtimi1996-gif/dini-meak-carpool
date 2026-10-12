@@ -52,7 +52,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} DiniM3ak — {t("footer.rights")}
+        © {new Date().getFullYear()} TREQI — {t("footer.rights")}
       </div>
     </footer>
   );

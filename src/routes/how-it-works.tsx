@@ -16,13 +16,13 @@ import { useI18n } from "@/lib/i18n";
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
     meta: [
-      { title: "Comment fonctionne DiniM3ak — Covoiturage au Maroc" },
+      { title: "Comment fonctionne TREQI — Covoiturage au Maroc" },
       {
         name: "description",
         content:
-          "Rechercher, réserver, voyager : découvrez les trois étapes du covoiturage DiniM3ak et nos garanties de sécurité au Maroc.",
+          "Rechercher, réserver, voyager : découvrez les trois étapes du covoiturage TREQI et nos garanties de sécurité au Maroc.",
       },
-      { property: "og:title", content: "Comment fonctionne DiniM3ak" },
+      { property: "og:title", content: "Comment fonctionne TREQI" },
       {
         property: "og:description",
         content: "Trois étapes pour voyager ensemble au Maroc, en toute sécurité.",

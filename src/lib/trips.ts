@@ -55,7 +55,7 @@ export type TripWithDriver = TripRow & {
 };
 
 export function displayName(p: Pick<ProfileLite, "first_name" | "last_name"> | null) {
-  if (!p) return "DiniM3ak";
+  if (!p) return "TREQI";
   const last = p.last_name ? `${p.last_name.charAt(0)}.` : "";
   return [p.first_name ?? "Membre", last].filter(Boolean).join(" ");
 }
