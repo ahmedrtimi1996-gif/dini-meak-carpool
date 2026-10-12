@@ -22,13 +22,13 @@ export const Route = createFileRoute("/search")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Rechercher un trajet — DiniM3ak" },
+      { title: "Rechercher un trajet — TREQI" },
       {
         name: "description",
         content:
           "Comparez les trajets de covoiturage au Maroc : horaires 24h, prix en MAD et conducteurs vérifiés.",
       },
-      { property: "og:title", content: "Rechercher un trajet — DiniM3ak" },
+      { property: "og:title", content: "Rechercher un trajet — TREQI" },
       {
         property: "og:description",
         content: "Trouvez votre covoiturage au Maroc : prix en MAD et conducteurs vérifiés.",

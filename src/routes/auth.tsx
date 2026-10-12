@@ -9,14 +9,14 @@ import { Logo } from "@/components/brand/Logo";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Connexion — DiniM3ak" },
+      { title: "Connexion — TREQI" },
       {
         name: "description",
         content:
-          "Connectez-vous à DiniM3ak pour réserver un covoiturage au Maroc ou publier vos trajets.",
+          "Connectez-vous à TREQI pour réserver un covoiturage au Maroc ou publier vos trajets.",
       },
-      { property: "og:title", content: "Connexion — DiniM3ak" },
-      { property: "og:description", content: "Rejoignez la communauté DiniM3ak." },
+      { property: "og:title", content: "Connexion — TREQI" },
+      { property: "og:description", content: "Rejoignez la communauté TREQI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },

@@ -26,16 +26,16 @@ import { POPULAR_ROUTES, RIDES } from "@/lib/rides";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "DiniM3ak — Covoiturage au Maroc, voyagez ensemble" },
+      { title: "TREQI — Covoiturage au Maroc, voyagez ensemble" },
       {
         name: "description",
         content:
-          "DiniM3ak relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route.",
+          "TREQI relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route.",
       },
-      { property: "og:title", content: "DiniM3ak — Covoiturage au Maroc, voyagez ensemble" },
+      { property: "og:title", content: "TREQI — Covoiturage au Maroc, voyagez ensemble" },
       {
         property: "og:description",
-        content: "DiniM3ak relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route.",
+        content: "TREQI relie conducteurs et passagers partout au Maroc. Trouvez un trajet en MAD, réservez en confiance et économisez sur chaque route.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "DiniM3ak",
+          name: "TREQI",
           slogan: "Voyagez ensemble, économisez davantage.",
           areaServed: "MA",
           url: "/",

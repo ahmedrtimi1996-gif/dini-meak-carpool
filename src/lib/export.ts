@@ -63,7 +63,7 @@ export function printTableAsPdf(
     th{background:#0f766e;color:#fff;text-transform:uppercase;letter-spacing:.04em}
     tr:nth-child(even) td{background:#f8fafc}
   </style></head><body>
-  <h1>DiniM3ak — ${escapeHtml(title)}</h1>
+  <h1>TREQI — ${escapeHtml(title)}</h1>
   <p>${rows.length} lignes · ${new Date().toLocaleString("fr-MA")}</p>
   <table><thead><tr>${cols.map((c) => `<th>${escapeHtml(c)}</th>`).join("")}</tr></thead>
   <tbody>${rows

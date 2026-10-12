@@ -78,7 +78,7 @@ function AdminTripsPage() {
       description="Modérez les annonces : mise en pause, correction, duplication ou archivage."
       actions={
         <>
-          <Button variant="outline" size="sm" disabled={!exportRows.length} onClick={() => downloadCsv("dinim3ak-trajets", exportRows)}>
+          <Button variant="outline" size="sm" disabled={!exportRows.length} onClick={() => downloadCsv("treqi-trajets", exportRows)}>
             <Download className="h-4 w-4" aria-hidden="true" />
             CSV
           </Button>

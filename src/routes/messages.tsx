@@ -20,16 +20,16 @@ export const Route = createFileRoute("/messages")({
     typeof search['c'] === "string" ? { c: search['c'] as string } : {},
   head: () => ({
     meta: [
-      { title: "Messages — DiniM3ak" },
+      { title: "Messages — TREQI" },
       {
         name: "description",
         content:
-          "Discutez avec les conducteurs et passagers DiniM3ak avant et après la réservation de votre trajet.",
+          "Discutez avec les conducteurs et passagers TREQI avant et après la réservation de votre trajet.",
       },
-      { property: "og:title", content: "Messages — DiniM3ak" },
+      { property: "og:title", content: "Messages — TREQI" },
       {
         property: "og:description",
-        content: "Échangez en direct avec les conducteurs et passagers DiniM3ak.",
+        content: "Échangez en direct avec les conducteurs et passagers TREQI.",
       },
     ],
   }),
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/messages")({
 });
 
 function nameOf(p: ConversationView["other"]) {
-  if (!p) return "Membre DiniM3ak";
+  if (!p) return "Membre TREQI";
   const last = p.last_name ? `${p.last_name.charAt(0)}.` : "";
   return [p.first_name ?? "Membre", last].filter(Boolean).join(" ");
 }

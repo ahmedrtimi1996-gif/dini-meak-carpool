@@ -14,15 +14,15 @@ export const Route = createFileRoute("/profile/edit")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Mon profil — DiniM3ak" },
+      { title: "Mon profil — TREQI" },
       {
         name: "description",
         content:
-          "Complétez votre profil DiniM3ak : nom, ville, téléphone, langues parlées et contact d'urgence.",
+          "Complétez votre profil TREQI : nom, ville, téléphone, langues parlées et contact d'urgence.",
       },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Mon profil — DiniM3ak" },
-      { property: "og:description", content: "Gérez vos informations personnelles DiniM3ak." },
+      { property: "og:title", content: "Mon profil — TREQI" },
+      { property: "og:description", content: "Gérez vos informations personnelles TREQI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

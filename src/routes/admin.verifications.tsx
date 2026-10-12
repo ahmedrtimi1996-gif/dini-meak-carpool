@@ -18,14 +18,14 @@ export const Route = createFileRoute("/admin/verifications")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Centre de vérification — Admin DiniM3ak" },
+      { title: "Centre de vérification — Admin TREQI" },
       {
         name: "description",
-        content: "Examinez et validez les documents conducteurs soumis sur DiniM3ak.",
+        content: "Examinez et validez les documents conducteurs soumis sur TREQI.",
       },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Centre de vérification — Admin DiniM3ak" },
-      { property: "og:description", content: "Revue des documents conducteurs DiniM3ak." },
+      { property: "og:title", content: "Centre de vérification — Admin TREQI" },
+      { property: "og:description", content: "Revue des documents conducteurs TREQI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

@@ -62,7 +62,7 @@ function AdminHome() {
   return (
     <AdminShell
       title="Tableau de bord"
-      description="Vue temps réel de l'activité DiniM3ak : croissance, revenus, trajets et signaux de risque."
+      description="Vue temps réel de l'activité TREQI : croissance, revenus, trajets et signaux de risque."
       actions={
         <>
           <Button variant="outline" size="sm" onClick={() => void refetch()} disabled={isFetching}>
@@ -75,7 +75,7 @@ function AdminHome() {
             onClick={() =>
               data &&
               downloadCsv(
-                `dinim3ak-revenus-${new Date().toISOString().slice(0, 10)}`,
+                `treqi-revenus-${new Date().toISOString().slice(0, 10)}`,
                 data.revenue_series as unknown as Record<string, unknown>[],
               )
             }
@@ -326,7 +326,7 @@ function TopList({ users, valueKey }: { users: TopUser[]; valueKey: "revenue" | 
           </Avatar>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-bold">
-              {[u.first_name, u.last_name].filter(Boolean).join(" ") || "Membre DiniM3ak"}
+              {[u.first_name, u.last_name].filter(Boolean).join(" ") || "Membre TREQI"}
             </p>
             <p className="text-xs text-muted-foreground">
               {num(u.bookings)} réservations · <BadgeCheck className="inline h-3 w-3" aria-hidden="true" />{" "}
