@@ -9,6 +9,10 @@ export type Ride = {
   /** 24h HH:mm */
   time: string;
   duration: string;
+  /** Estimated arrival (driver-entered), local Morocco time. */
+  arriveDate?: string | null;
+  arriveTime?: string | null;
+  durationMinutes?: number | null;
   price: number;
   seats: number;
   driver: string;
